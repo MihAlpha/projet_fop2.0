@@ -1,0 +1,265 @@
+/* Container principal */
+.agent-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* toute la hauteur visible de la page */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f7f9fc;
+  font-family: Arial, sans-serif;
+}
+
+/* Barre du haut (titre + boutons + recherche) */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Bouton ajouter agent */
+.add-agent-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.add-agent-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Barre de recherche */
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  background: white;
+}
+
+.search-bar input {
+  border: none;
+  padding: 6px 10px;
+  outline: none;
+  font-size: 14px;
+  width: 200px;
+}
+
+.search-bar img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* Wrapper du tableau pour gérer le scroll */
+.agent-table-wrapper {
+  flex-grow: 1; /* prend tout l'espace vertical restant */
+  overflow: auto;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+}
+
+/* Tableau */
+.agent-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 900px; /* pour forcer un peu le scroll horizontal si besoin */
+}
+
+.agent-table thead {
+  background-color: #007bff;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.agent-table th,
+.agent-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.agent-table tbody tr:hover {
+  background-color: #f1f7ff;
+}
+
+/* Boutons actions dans la liste */
+.action-buttons button {
+  margin-right: 8px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+/* ✔️ Fond bleu clair au survol pour ✏️ Modifier */
+.action-buttons button.edit:hover {
+  background-color: #d0e7ff; /* couleur modifiée */
+  color: #004085;
+}
+
+/* ✔️ Fond rouge clair au survol pour 🗑️ Supprimer */
+.action-buttons button.delete:hover {
+  background-color: #ffd6d6; /* couleur modifiée */
+  color: #721c24;
+}
+
+/* Bouton fermer en haut à droite */
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: 30px;
+  top: 25px;
+  color: #555;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+/* Formulaire */
+.agent-form {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Inputs container */
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-container input,
+.input-container select {
+  width: 100%;
+  padding: 10px 8px 10px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-container input:focus,
+.input-container select:focus {
+  border-color: #007bff;
+}
+
+/* Labels flottants */
+.input-container label {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 14px;
+  color: #999;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.input-container input:not(:placeholder-shown) + label,
+.input-container select.has-value + label {
+  top: -8px;
+  font-size: 12px;
+  color: #007bff;
+  background: white;
+  padding: 0 4px;
+}
+
+/* Champs demi largeur côte à côte */
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.half-field {
+  flex: 1;
+}
+
+/* Boutons formulaire */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #ddd;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #bbb;
+}
+
+/* Texte quand pas d'agents */
+.agent-container p {
+  margin-top: 40px;
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #ccc;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+}

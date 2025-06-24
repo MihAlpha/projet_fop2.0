@@ -1,0 +1,202 @@
+.admin-container {
+  padding: 40px 30px;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+}
+
+.admin-container h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.header-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 999;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #2c3e50;
+  padding-right: 30px; 
+}
+
+.notif-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 6px; /* ✅ Ajout de padding */
+}
+
+.notif-icon img {
+  height: 42px;
+  width: 42px;
+}
+
+.notif-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  z-index: 1000;
+}
+
+.notif-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notif-dropdown li {
+  margin-bottom: 10px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: center;
+  padding: 14px 12px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.admin-table thead {
+  background-color: #2f80ed;
+  color: white;
+  font-weight: 600;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f0f3f5;
+}
+
+.admin-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 5px; /* ✅ Ajout d'une petite marge entre les boutons */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  width: 100px; /* ✅ Uniformiser la largeur */
+  box-sizing: border-box;
+}
+
+.edit-btn {
+  background-color: #f7c948;
+  color: #1a1a1a;
+}
+
+.edit-btn:hover {
+  background-color: #e0b43d;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.toggle-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.toggle-btn:hover {
+  background-color: #2d80c3;
+}
+
+.admin-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.admin-modal-content {
+  background: #ffffff;
+  padding: 24px 30px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.admin-modal-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.admin-modal-content label {
+  display: block;
+  margin-top: 16px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.admin-modal-content input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.admin-modal-content button {
+  margin-top: 20px;
+  margin-right: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.admin-modal-content button:first-of-type {
+  background-color: #27ae60;
+  color: white;
+}
+
+.admin-modal-content button:last-of-type {
+  background-color: #bdc3c7;
+  color: #2c3e50;
+}

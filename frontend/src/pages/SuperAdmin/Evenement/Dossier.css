@@ -1,0 +1,120 @@
+.dossier-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.dossier-wrapper {
+  background: white;
+  padding: 20px;
+  width: 800px;
+  max-width: 95%;
+  max-height: 95%;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.dossier-content {
+  background: white;
+  padding: 30px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: black;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.dossier-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.btn-print,
+.btn-download,
+.btn-close,
+.btn-email {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-close {
+  background-color: #dc3545;
+}
+
+.btn-print:hover,
+.btn-download:hover,
+.btn-email:hover {
+  background-color: #0056b3;
+}
+
+.btn-close:hover {
+  background-color: #c82333;
+}
+
+/* Aligner les images dans les dossiers */
+.dossier-content img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===================== */
+/* STYLES D'IMPRESSION */
+/* ===================== */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .dossier-content, .dossier-content * {
+    visibility: visible !important;
+  }
+
+  .dossier-content {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    width: 18cm !important; /* largeur typique centrée */
+    margin: 0 auto !important;
+    right: 0;
+    padding: 2cm !important;
+    background: white !important;
+    box-shadow: none !important;
+    color: black !important;
+    font-size: 14pt !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .dossier-wrapper, .dossier-overlay {
+    all: unset !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 2cm;
+  }
+}

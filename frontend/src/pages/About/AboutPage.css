@@ -1,0 +1,81 @@
+.about-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    padding: 50px 20px;
+  }
+  
+  .about-content {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about-content h1 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 30px;
+  }
+  
+  .presentation h2,
+  .contact-section h2 {
+    color: #1e90ff;
+    margin-top: 20px;
+  }
+  
+  .presentation h3 {
+    color: #003366;
+    margin-top: 15px;
+  }
+  
+  .presentation p,
+  .contact-section .contact-item {
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  
+  .contact-item svg {
+    color: #1e90ff;
+    font-size: 18px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding: 0 5%;
+  }
+  
+  .back-home-btn {
+    padding: 10px 20px;
+    background-color: #003366;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .back-home-btn:hover {
+    background-color: #005fa3;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .button-container {
+      justify-content: center;
+    }
+  }
+  
