@@ -9,6 +9,7 @@ const LettreRenouvellement = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Renouvellement";
   const nom_dossier = "Lettre de renouvellement de contrat";
+  const role = localStorage.getItem("role"); // ✅ Récupération du rôle
 
   // ✅ Charger la signature existante
   useEffect(() => {
@@ -23,9 +24,8 @@ const LettreRenouvellement = ({ agent, onSignatureValidee }) => {
             : `data:image/png;base64,${data.signature_image}`;
           setSignature(imageData);
 
-          // ✅ Notifier le parent si la signature existe déjà
           if (onSignatureValidee) {
-            onSignatureValidee();
+            onSignatureValidee(); // ✅ Notifier le parent
           }
         }
       } catch (error) {
@@ -59,7 +59,7 @@ const LettreRenouvellement = ({ agent, onSignatureValidee }) => {
       if (response.ok) {
         alert("✅ Signature enregistrée avec succès !");
         if (onSignatureValidee) {
-          onSignatureValidee(); // ✅ Notifier le parent après signature
+          onSignatureValidee();
         }
       } else {
         alert("❌ Erreur : " + result.message);
@@ -133,7 +133,9 @@ const LettreRenouvellement = ({ agent, onSignatureValidee }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

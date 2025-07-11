@@ -10,6 +10,8 @@ const DecretIntegration = ({ agent }) => {
   const type_evenement = "Intégration";
   const nom_dossier = "Décret d’intégration";
 
+  const role = localStorage.getItem("role"); // ✅ Récupère le rôle depuis localStorage
+
   // ✅ Charger la signature depuis le backend
   useEffect(() => {
     const fetchSignature = async () => {
@@ -124,11 +126,12 @@ const DecretIntegration = ({ agent }) => {
         <p>Antananarivo, le {today}</p>
         <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
 
-        {/* Affichage ou bouton signer */}
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

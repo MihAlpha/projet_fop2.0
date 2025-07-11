@@ -9,6 +9,7 @@ const DemandePension = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Retraite";
   const nom_dossier = "Demande de pension de retraite";
+  const role = localStorage.getItem("role"); // ✅ Récupération du rôle depuis le localStorage
 
   // 🔄 Charger la signature existante
   useEffect(() => {
@@ -135,7 +136,9 @@ const DemandePension = ({ agent, onSignatureValidee }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

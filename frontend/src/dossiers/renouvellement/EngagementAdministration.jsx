@@ -9,6 +9,7 @@ const EngagementAdministration = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Avenant";
   const nom_dossier = "Engagement de l’administration";
+  const role = localStorage.getItem("role"); // ✅ Récupération du rôle connecté
 
   useEffect(() => {
     const fetchSignature = async () => {
@@ -22,9 +23,8 @@ const EngagementAdministration = ({ agent, onSignatureValidee }) => {
             : `data:image/png;base64,${data.signature_image}`;
           setSignature(imageData);
 
-          // ✅ Notifier le parent si la signature existe déjà
           if (onSignatureValidee) {
-            onSignatureValidee();
+            onSignatureValidee(); // ✅ Notification si déjà signé
           }
         }
       } catch (error) {
@@ -57,7 +57,7 @@ const EngagementAdministration = ({ agent, onSignatureValidee }) => {
       if (response.ok) {
         alert("✅ Signature enregistrée avec succès !");
         if (onSignatureValidee) {
-          onSignatureValidee(); // ✅ Notification au parent après signature
+          onSignatureValidee();
         }
       } else {
         alert("❌ Erreur : " + result.message);
@@ -131,7 +131,9 @@ const EngagementAdministration = ({ agent, onSignatureValidee }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

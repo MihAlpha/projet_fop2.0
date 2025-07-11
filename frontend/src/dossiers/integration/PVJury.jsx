@@ -10,6 +10,8 @@ const PVJury = ({ agent, onSignatureValidee }) => {
   const type_evenement = "Intégration";
   const nom_dossier = "Procès verbal de jury";
 
+  const role = localStorage.getItem("role"); // ✅ Récupération du rôle
+
   // ✅ Charger la signature depuis l’API
   useEffect(() => {
     const fetchSignature = async () => {
@@ -23,8 +25,7 @@ const PVJury = ({ agent, onSignatureValidee }) => {
             : `data:image/png;base64,${data.signature_image}`;
           setSignature(imageData);
 
-          // ✅ Notifier le parent si déjà signé
-          if (onSignatureValidee) onSignatureValidee();
+          if (onSignatureValidee) onSignatureValidee(); // ✅ Notifier si déjà signé
         }
       } catch (error) {
         console.error("Erreur lors du chargement de la signature :", error);
@@ -56,7 +57,7 @@ const PVJury = ({ agent, onSignatureValidee }) => {
 
       if (response.ok) {
         alert("✅ Signature enregistrée avec succès !");
-        if (onSignatureValidee) onSignatureValidee(); // ✅ notifier le parent
+        if (onSignatureValidee) onSignatureValidee();
       } else {
         alert("❌ Erreur : " + result.message);
       }
@@ -133,7 +134,9 @@ const PVJury = ({ agent, onSignatureValidee }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

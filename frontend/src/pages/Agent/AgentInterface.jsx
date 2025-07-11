@@ -6,7 +6,12 @@ import ContratModifie from '../../dossiers/avenant/ContratModifie';
 import LettreAffectation from '../../dossiers/avenant/LettreAffectation';
 import AttestationDePerformance from '../../dossiers/avancement/AttestationDePerformance';
 import DemandeAvancement from '../../dossiers/avancement/DemandeAvancement';
-// Ajoute ici tous les autres composants de dossier...
+import DecretIntegration from '../../dossiers/integration/DecretIntegration';
+import PVJury from '../../dossiers/integration/PVJury';
+import EngagementAdministration from '../../dossiers/renouvellement/EngagementAdministration';
+import LettreRenouvellement from '../../dossiers/renouvellement/LettreRenouvellement';
+import CertificatCessation from '../../dossiers/retraite/CertificatCessation';
+import DemandePension from '../../dossiers/retraite/DemandePension';
 
 const documentsParType = {
   Avenant: ["Contrat modifié", "Lettre d'affectation"],
@@ -21,7 +26,12 @@ const composantsDossier = {
   "Lettre d'affectation": LettreAffectation,
   "Attestation de performance": AttestationDePerformance,
   "Demande d’avancement": DemandeAvancement,
-  // Ajoute tous les autres composants ici...
+  "Décret d’intégration": DecretIntegration,
+  "PV de jury": PVJury,
+  "Lettre de renouvellement": LettreRenouvellement,
+  "Lettre d’engagement de l’administration": EngagementAdministration,
+  "Certificat de cessation": CertificatCessation,
+  "Demande de pension": DemandePension,
 };
 
 class AgentInterface extends Component {
