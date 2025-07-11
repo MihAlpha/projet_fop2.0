@@ -30,7 +30,7 @@ class AgentInterface extends Component {
 
     localStorage.setItem('agent_id', agentId); // au cas où tu veux l’utiliser ailleurs
 
-    // 🔵 Fetch les infos de l’agent
+    //  Fetch les infos de l’agent
     fetch(`http://localhost:8000/api/agents/${agentId}/`)
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la récupération de l'agent");
@@ -39,7 +39,7 @@ class AgentInterface extends Component {
       .then((data) => this.setState({ agent: data }))
       .catch((err) => console.error("❌ Erreur fetch agent:", err));
 
-    // 🔵 Fetch les événements du jour
+    //  Fetch les événements du jour
     fetch(`http://localhost:8000/api/evenements-du-jour/?agent_id=${agentId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des événements");
