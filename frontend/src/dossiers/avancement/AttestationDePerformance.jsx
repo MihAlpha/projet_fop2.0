@@ -10,7 +10,8 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
   const type_evenement = "Avancement";
   const nom_dossier = "Attestation de performance";
 
-  // ✅ Charger la signature depuis le backend
+  const role = localStorage.getItem("role"); // 👈 Récupère le rôle ici
+
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -24,7 +25,6 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
           setSignature(imageData);
           if (onSignatureValidee) onSignatureValidee(); 
         }
-
       } catch (error) {
         console.error("Erreur lors du chargement de la signature :", error);
       }
@@ -35,36 +35,34 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
     }
   }, [agent]);
 
+  const envoyerSignature = async (signatureImage) => {
+    try {
+      const data = {
+        agent: agent.id,
+        evenement: type_evenement,
+        nom_dossier: nom_dossier,
+        signature_image: signatureImage,
+      };
 
-  // ✅ Envoi de la signature vers le backend
-const envoyerSignature = async (signatureImage) => {
-  try {
-    const data = {
-      agent: agent.id,
-      evenement: type_evenement,
-      nom_dossier: nom_dossier,
-      signature_image: signatureImage,
-    };
+      const response = await fetch("http://localhost:8000/api/enregistrer_signature/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    const response = await fetch("http://localhost:8000/api/enregistrer_signature/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+      const result = await response.json();
 
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("✅ Signature enregistrée avec succès !");
-      if (onSignatureValidee) onSignatureValidee(); // ✅ ici
-    } else {
-      alert("❌ Erreur : " + result.message);
+      if (response.ok) {
+        alert("✅ Signature enregistrée avec succès !");
+        if (onSignatureValidee) onSignatureValidee();
+      } else {
+        alert("❌ Erreur : " + result.message);
+      }
+    } catch (error) {
+      alert("⚠️ Erreur de connexion.");
+      console.error(error);
     }
-  } catch (error) {
-    alert("⚠️ Erreur de connexion.");
-    console.error(error);
-  }
-};
+  };
 
   return (
     <div style={{
@@ -117,7 +115,7 @@ const envoyerSignature = async (signatureImage) => {
         Fait pour servir et valoir ce que de droit.
       </p>
 
-      {/* Signature */}
+      {/* Bloc Signature */}
       <div style={{
         marginTop: '180px',
         textAlign: 'right',
@@ -127,25 +125,26 @@ const envoyerSignature = async (signatureImage) => {
         <p>Antananarivo, le {today}</p>
         <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
 
-        {/* Zone d'affichage de la signature */}
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Modale de signature */}
+      {/* Modale Signature */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}
           onClose={() => setShowSignature(false)}
           onValidate={(img) => {
-            setSignature(img);        
-            envoyerSignature(img);    
-            setShowSignature(false);  
+            setSignature(img);
+            envoyerSignature(img);
+            setShowSignature(false);
           }}
         />
       )}

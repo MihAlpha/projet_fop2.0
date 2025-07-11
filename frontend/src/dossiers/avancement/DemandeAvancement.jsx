@@ -10,7 +10,8 @@ const DemandeAvancement = ({ agent }) => {
   const type_evenement = "Avancement";
   const nom_dossier = "Demande d’avancement";
 
-  // Charger la signature existante depuis le backend
+  const role = localStorage.getItem("role"); // ✅ Récupère le rôle depuis localStorage
+
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -18,7 +19,10 @@ const DemandeAvancement = ({ agent }) => {
         const data = await response.json();
 
         if (response.ok && data.signature_image) {
-          setSignature(data.signature_image);
+          const imageData = data.signature_image.startsWith("data:")
+            ? data.signature_image
+            : `data:image/png;base64,${data.signature_image}`;
+          setSignature(imageData);
         }
       } catch (error) {
         console.error("Erreur lors du chargement de la signature :", error);
@@ -30,7 +34,6 @@ const DemandeAvancement = ({ agent }) => {
     }
   }, [agent]);
 
-  // Envoi de la signature vers le backend
   const envoyerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -127,7 +130,9 @@ const DemandeAvancement = ({ agent }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === "agent" && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
