@@ -10,7 +10,8 @@ const LettreAffectation = ({ agent }) => {
   const type_evenement = "Avenant";
   const nom_dossier = "Lettre d'affectation";
 
-  // ✅ Charger la signature depuis le backend
+  const role = localStorage.getItem('role'); // Récupérer le rôle depuis localStorage
+
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -33,7 +34,6 @@ const LettreAffectation = ({ agent }) => {
     }
   }, [agent]);
 
-  // ✅ Envoi de la signature vers le backend
   const envoyerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -131,7 +131,9 @@ const LettreAffectation = ({ agent }) => {
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === 'agent' && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>

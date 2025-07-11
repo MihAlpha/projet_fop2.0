@@ -38,7 +38,13 @@ class AgentInterface extends Component {
   }
 
   componentDidMount() {
+    // ✅ Définir le rôle "agent" si non présent
+    if (!localStorage.getItem('role')) {
+      localStorage.setItem('role', 'agent');
+    }
+
     const agentId = window.location.pathname.split('/').pop();
+    localStorage.setItem('agent_id', agentId);
 
     fetch(`http://localhost:8000/api/agents/${agentId}/`)
       .then((res) => res.json())
@@ -62,7 +68,6 @@ class AgentInterface extends Component {
   handleChoisirDocument = (nom) => {
     this.setState({ dossierNom: nom });
 
-    // Vérifier si signature existe
     const agentId = this.state.agent?.id;
     const type = this.state.typeSelectionne;
 
@@ -73,10 +78,7 @@ class AgentInterface extends Component {
   };
 
   handleFermer = () => {
-    this.setState({
-      dossierNom: null,
-      dossierSigne: false,
-    });
+    this.setState({ dossierNom: null, dossierSigne: false });
   };
 
   handleValiderSignature = () => {

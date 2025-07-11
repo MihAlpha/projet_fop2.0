@@ -10,7 +10,8 @@ const ContratModifie = ({ agent }) => {
   const type_evenement = "Avenant";
   const nom_dossier = "Contrat modifié";
 
-  // ✅ Charger la signature depuis le backend
+  const role = localStorage.getItem('role'); // 👈 Lire le rôle depuis localStorage
+
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -33,7 +34,6 @@ const ContratModifie = ({ agent }) => {
     }
   }, [agent]);
 
-  // ✅ Envoi de la signature vers le backend
   const envoyerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -75,7 +75,7 @@ const ContratModifie = ({ agent }) => {
       position: 'relative',
       lineHeight: '1.8em'
     }}>
-      {/* En-tête avec logo */}
+      {/* En-tête */}
       <div style={{ width: '100%', marginBottom: '20px' }}>
         <img
           src={logo}
@@ -84,7 +84,6 @@ const ContratModifie = ({ agent }) => {
         />
       </div>
 
-      {/* Titre */}
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
@@ -94,22 +93,16 @@ const ContratModifie = ({ agent }) => {
         Modification de contrat
       </h2>
 
-      {/* Texte professionnel */}
       <p>
         Je soussigné(e), <strong>{agent.nom} {agent.prenom}</strong>, agent administratif immatriculé sous le numéro <strong>{agent.im}</strong>,
         atteste avoir été informé(e) des modifications apportées à mon contrat de travail.
-        Ces modifications prendront effet à compter, conformément aux dispositions mises en place par l’administration.
       </p>
-
       <p>
         Je reconnais avoir pris connaissance du contenu du présent contrat modifié et m’engage à en respecter toutes les clauses.
-        Les changements portent notamment sur mes fonctions, mes responsabilités ou d’autres éléments contractuels, conformément à la législation en vigueur.
       </p>
-
       <p>
         Ce contrat modifié annule et remplace toutes les versions antérieures.
       </p>
-
       <p>
         Fait pour servir et valoir ce que de droit.
       </p>
@@ -124,25 +117,27 @@ const ContratModifie = ({ agent }) => {
         <p>Antananarivo, le {today}</p>
         <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
 
-        {/* Zone de signature */}
+        {/* ✅ Afficher image ou bouton signer selon le rôle */}
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
-          <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          role === 'agent' && (
+            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+          )
         )}
 
         <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Modale de signature */}
+      {/* Modale SignaturePad */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}
           onClose={() => setShowSignature(false)}
           onValidate={(img) => {
-            setSignature(img);         // Affiche localement
-            envoyerSignature(img);     // Enregistre dans la base
-            setShowSignature(false);   // Ferme la modale
+            setSignature(img);
+            envoyerSignature(img);
+            setShowSignature(false);
           }}
         />
       )}
