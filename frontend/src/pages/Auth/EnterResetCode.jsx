@@ -1,7 +1,7 @@
-// src/components/EnterResetCode.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './EnterResetCode.css';
+import LogoMTEFOP from './MDP.png';
 
 const EnterResetCode = () => {
   const [email, setEmail] = useState('');
@@ -27,9 +27,7 @@ const EnterResetCode = () => {
     try {
       const response = await fetch('http://localhost:8000/api/verify-reset-code/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),
       });
 
@@ -37,7 +35,6 @@ const EnterResetCode = () => {
 
       if (response.ok) {
         setMessage(data.message || 'Code vérifié avec succès');
-        // Enregistre dans localStorage que l'email est validé
         localStorage.setItem('resetEmailVerified', 'true');
         navigate('/reset-password');
       } else {
@@ -56,9 +53,7 @@ const EnterResetCode = () => {
     try {
       const response = await fetch('http://localhost:8000/api/resend-reset-code/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
@@ -74,25 +69,34 @@ const EnterResetCode = () => {
   };
 
   return (
-    <div className="enter-code-container">
-      <h2>Entrez le code de réinitialisation</h2>
+    <div className="enter-code-wrapper">
+      <div className="enter-code-card">
+        <div className="enter-code-left">
+          <img src={LogoMTEFOP} alt="Logo" className="enter-code-logo" />
+          <h2 className="enter-code-title">MTEFoP</h2>
+        </div>
 
-      <input
-        type="text"
-        placeholder="Code de réinitialisation"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-      />
-      <button onClick={handleVerify}>Valider le code</button>
+        <div className="enter-code-right">
+          <h2>Code de réinitialisation</h2>
 
-      {error && <div className="error-message">{error}</div>}
-      {message && <div className="success-message">{message}</div>}
+          <input
+            type="text"
+            placeholder="Entrez le code reçu"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
 
-      <div className="extra-options">
-        <a onClick={handleResendCode} className="resend-link" style={{ cursor: 'pointer' }}>
-          Code non reçu ?
-        </a>
-        <Link to="/forgot-password" className="cancel-link">Annuler</Link>
+          <button onClick={handleVerify}>Valider le code</button>
+
+          {error && <div className="error-message">{error}</div>}
+          {message && <div className="success-message">{message}</div>}
+
+          <div className="extra-options">
+            <a onClick={handleResendCode} style={{ cursor: 'pointer' }}>Code non reçu ?</a>
+            <Link to="/forgot-password">Annuler</Link>
+          </div>
+        </div>
       </div>
     </div>
   );

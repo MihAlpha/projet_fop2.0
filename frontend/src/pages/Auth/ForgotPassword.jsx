@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './ForgotPassword.css';
+import LogoMTEFOP from './MDP.png'; // ✅ logo importé
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -27,9 +28,7 @@ function ForgotPassword() {
     try {
       const response = await fetch('http://localhost:8000/api/forgot-password/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
@@ -37,7 +36,7 @@ function ForgotPassword() {
 
       if (response.ok) {
         localStorage.setItem('resetEmail', email);
-        navigate('/enter-code'); // ✅ Redirection corrigée
+        navigate('/enter-code');
       } else {
         setError(data.message || 'Une erreur est survenue.');
       }
@@ -49,29 +48,37 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="forgot-password-container">
-      <h2>Mot de passe oublié ?</h2>
+    <div className="forgot-wrapper">
+      <div className="forgot-card">
+        <div className="forgot-left">
+          <img src={LogoMTEFOP} alt="Logo" className="forgot-logo" />
+          <h2 className="forgot-title">MTEFoP</h2>
+        </div>
 
-      {loading && <p>Envoi du code en cours...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className="forgot-right">
+          <h2>Mot de passe oublié ?</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Votre adresse e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        /><br /><br />
+          {loading && <p>Envoi du code en cours...</p>}
+          {error && <p className="error-message">{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Envoi en cours...' : 'Envoyer le code'}
-        </button>
-      </form>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="email"
+              placeholder="Votre adresse e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? 'Envoi en cours...' : 'Envoyer le code'}
+            </button>
+          </form>
 
-      <p className="extra-options">
-        <Link to="/login">Retour à la connexion</Link>
-      </p>
+          <p className="extra-options">
+            <Link to="/login">Retour à la connexion</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 .admin-container {
   padding: 40px 30px;
   font-family: "Segoe UI", sans-serif;
-  background-color: #f4f6f8;
+  background-color: #f0fdfa;
   min-height: 100vh;
 }
 
@@ -28,13 +28,13 @@
   font-size: 22px;
   cursor: pointer;
   color: #2c3e50;
-  padding-right: 30px; 
+  padding-right: 30px;
 }
 
 .notif-icon {
   position: relative;
   cursor: pointer;
-  padding: 6px; /* ✅ Ajout de padding */
+  padding: 6px;
 }
 
 .notif-icon img {
@@ -92,25 +92,25 @@
 }
 
 .admin-table thead {
-  background-color: #2f80ed;
+  background-color: #26a69a;
   color: white;
   font-weight: 600;
 }
 
 .admin-table tbody tr:hover {
-  background-color: #f0f3f5;
+  background-color: #e0f7fa;
 }
 
 .admin-btn {
   border: none;
   border-radius: 6px;
   padding: 8px 14px;
-  margin: 5px; /* ✅ Ajout d'une petite marge entre les boutons */
+  margin: 5px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 14px;
-  width: 100px; /* ✅ Uniformiser la largeur */
+  width: 100px;
   box-sizing: border-box;
 }
 
@@ -133,12 +133,12 @@
 }
 
 .toggle-btn {
-  background-color: #3498db;
+  background-color: #26a69a;
   color: white;
 }
 
 .toggle-btn:hover {
-  background-color: #2d80c3;
+  background-color: #1e8a7e;
 }
 
 .admin-modal {
@@ -192,7 +192,7 @@
 }
 
 .admin-modal-content button:first-of-type {
-  background-color: #27ae60;
+  background-color: #26a69a;
   color: white;
 }
 

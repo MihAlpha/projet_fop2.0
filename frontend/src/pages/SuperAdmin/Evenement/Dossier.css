@@ -47,7 +47,7 @@
 .btn-download,
 .btn-close,
 .btn-email {
-  background-color: #007bff;
+  background-color: #26a69a; /* ✅ bleu-vert */
   color: white;
   border: none;
   padding: 8px 14px;
@@ -63,7 +63,7 @@
 .btn-print:hover,
 .btn-download:hover,
 .btn-email:hover {
-  background-color: #0056b3;
+  background-color: #00796b; /* ✅ version foncée du bleu-vert */
 }
 
 .btn-close:hover {
@@ -95,7 +95,7 @@
     position: absolute !important;
     left: 0;
     top: 0;
-    width: 18cm !important; /* largeur typique centrée */
+    width: 18cm !important;
     margin: 0 auto !important;
     right: 0;
     padding: 2cm !important;

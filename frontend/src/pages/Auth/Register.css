@@ -1,112 +1,154 @@
-/* src/pages/Register.css */
-
+/* Fond général */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #e3f2fd, #90caf9);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-  }
-  
-  /* Container d'inscription */
-  .register-container {
-    background-color: #ffffff;
-    max-width: 420px;
-    margin: 80px auto;
-    padding: 35px;
-    border-radius: 16px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  
-  .register-container:hover {
-    transform: scale(1.01);
-  }
-  
-  .register-container h2 {
-    margin-bottom: 25px;
-    color: #0d47a1;
-    font-size: 26px;
-  }
-  
-  /* Champs de formulaire */
-  .register-container input {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Wrapper avec fond */
+.register-wrapper {
+  background: linear-gradient(135deg, #d0f0ec, #81cfd9);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bloc carte */
+.register-card {
+  display: flex;
+  flex-direction: row;
+  width: 540px;
+  min-height: 430px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Partie gauche : logo + titre */
+.register-left {
+  background-color: #80cbc4;
+  width: 38%;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-logo {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.register-title {
+  font-size: 22px;
+  color: #004d40;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Partie droite : formulaire */
+.register-right {
+  width: 62%;
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Champs de formulaire */
+.register-right input[type="text"],
+.register-right input[type="email"],
+.register-right input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #4db6ac;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #004d40;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.register-right input:focus {
+  border-color: #00796b;
+  outline: none;
+}
+
+/* Bouton */
+.register-right button {
+  width: 100%;
+  padding: 12px;
+  background-color: #00796b !important;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-left: 0px;
+  transition: background-color 0.3s ease;
+}
+
+.register-right button:hover {
+  background-color: #004d40;
+}
+
+/* Erreur */
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #f44336;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* Lien de retour login */
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.login-link a {
+  color: #00796b;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: color 0.2s ease;
+}
+
+.login-link a:hover {
+  color: #004d40;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .register-card {
     width: 90%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #b0bec5;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+    flex-direction: column;
   }
-  
-  .register-container input:focus {
-    border-color: #1976d2;
-    outline: none;
-  }
-  
-  /* Bouton inscription */
-  .register-container button {
+
+  .register-left,
+  .register-right {
     width: 100%;
-    padding: 12px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 17px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    padding: 20px;
   }
-  
-  .register-container button:hover {
-    background-color: #125aa0;
+
+  .register-logo {
+    margin-top: -50px;
   }
-  
-  /* Message d'erreur */
-  .error-message {
-    color: #d32f2f;
-    background-color: #ffebee;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #f44336;
-    border-radius: 8px;
-    font-weight: bold;
-  }
-  
-  /* Lien vers login */
-  .login-link {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .login-link a {
-    color: #1976d2;
-    text-decoration: none;
-    margin-left: 5px;
-    transition: color 0.2s ease;
-  }
-  
-  .login-link a:hover {
-    color: #0d47a1;
-    text-decoration: underline;
-  }
-  
-  /* Responsive */
-  @media (max-width: 600px) {
-    .register-container {
-      margin: 40px 20px;
-      padding: 25px;
-    }
-  
-    .register-container h2 {
-      font-size: 22px;
-    }
-  
-    .register-container input {
-      width: 100%;
-    }
-  }
-  
+}

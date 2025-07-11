@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
+import LogoMTEFOP from './mtefp_logo.jpg';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -40,51 +41,60 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <h2>Créer un compte</h2>
+    <div className="register-wrapper">
+      <div className="register-card">
+        {/* Partie gauche avec logo */}
+        <div className="register-left">
+          <img src={LogoMTEFOP} alt="Logo MTEFOP" className="register-logo" />
+          <h2 className="register-title">Inscription</h2>
+        </div>
 
-      {error && <p className="error-message">{error}</p>}
+        {/* Partie droite avec formulaire */}
+        <div className="register-right">
+          {error && <div className="error-message">{error}</div>}
 
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Nom d'utilisateur"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          required
-        />
+          <form onSubmit={handleRegister}>
+            <input
+              type="text"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              required
+            />
 
-        <input
-          type="email"
-          placeholder="Adresse e-mail"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
+            <input
+              type="email"
+              placeholder="Adresse e-mail"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
 
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
 
-        <input
-          type="password"
-          placeholder="Confirmer le mot de passe"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          required
-        />
+            <input
+              type="password"
+              placeholder="Confirmer le mot de passe"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              required
+            />
 
-        <button type="submit">S'inscrire</button>
-      </form>
+            <button type="submit">S'inscrire</button>
+          </form>
 
-      <p className="login-link">
-        Déjà un compte ?
-        <Link to="/login">Se connecter</Link>
-      </p>
+          <p className="login-link">
+            Déjà un compte ?
+            <Link to="/login">Se connecter</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

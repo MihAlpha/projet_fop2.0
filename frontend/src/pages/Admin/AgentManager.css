@@ -2,14 +2,14 @@
 .agent-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* toute la hauteur visible de la page */
+  height: 100vh;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f7f9fc;
+  background-color: #f0fdfa;
   font-family: Arial, sans-serif;
 }
 
-/* Barre du haut (titre + boutons + recherche) */
+/* Barre du haut */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -17,9 +17,8 @@
   margin-bottom: 10px;
 }
 
-/* Bouton ajouter agent */
 .add-agent-btn {
-  background-color: #007bff;
+  background-color: #26a69a;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -30,10 +29,9 @@
 }
 
 .add-agent-btn:hover {
-  background-color: #0056b3;
+  background-color: #00796b;
 }
 
-/* Barre de recherche */
 .search-bar {
   display: flex;
   align-items: center;
@@ -57,24 +55,22 @@
   margin-right: 8px;
 }
 
-/* Wrapper du tableau pour gérer le scroll */
 .agent-table-wrapper {
-  flex-grow: 1; /* prend tout l'espace vertical restant */
+  flex-grow: 1;
   overflow: auto;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
 }
 
-/* Tableau */
 .agent-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 900px; /* pour forcer un peu le scroll horizontal si besoin */
+  min-width: 900px;
 }
 
 .agent-table thead {
-  background-color: #007bff;
+  background-color: #26a69a;
   color: white;
   position: sticky;
   top: 0;
@@ -91,10 +87,9 @@
 }
 
 .agent-table tbody tr:hover {
-  background-color: #f1f7ff;
+  background-color: #e0f7fa;
 }
 
-/* Boutons actions dans la liste */
 .action-buttons button {
   margin-right: 8px;
   cursor: pointer;
@@ -106,19 +101,16 @@
   transition: background-color 0.3s ease;
 }
 
-/* ✔️ Fond bleu clair au survol pour ✏️ Modifier */
 .action-buttons button.edit:hover {
-  background-color: #d0e7ff; /* couleur modifiée */
-  color: #004085;
+  background-color: #b2dfdb;
+  color: #004d40;
 }
 
-/* ✔️ Fond rouge clair au survol pour 🗑️ Supprimer */
 .action-buttons button.delete:hover {
-  background-color: #ffd6d6; /* couleur modifiée */
-  color: #721c24;
+  background-color: #ffcdd2;
+  color: #c62828;
 }
 
-/* Bouton fermer en haut à droite */
 .close-button {
   background: none;
   border: none;
@@ -134,7 +126,6 @@
   color: #000;
 }
 
-/* Formulaire */
 .agent-form {
   max-width: 700px;
   margin: 0 auto;
@@ -146,7 +137,6 @@
   max-height: 90vh;
 }
 
-/* Inputs container */
 .input-container {
   position: relative;
   margin-bottom: 20px;
@@ -155,7 +145,7 @@
 .input-container input,
 .input-container select {
   width: 100%;
-  padding: 10px 8px 10px 8px;
+  padding: 10px 8px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -166,10 +156,9 @@
 
 .input-container input:focus,
 .input-container select:focus {
-  border-color: #007bff;
+  border-color: #26a69a;
 }
 
-/* Labels flottants */
 .input-container label {
   position: absolute;
   left: 10px;
@@ -184,12 +173,11 @@
 .input-container select.has-value + label {
   top: -8px;
   font-size: 12px;
-  color: #007bff;
+  color: #26a69a;
   background: white;
   padding: 0 4px;
 }
 
-/* Champs demi largeur côte à côte */
 .row {
   display: flex;
   gap: 20px;
@@ -199,7 +187,6 @@
   flex: 1;
 }
 
-/* Boutons formulaire */
 .button-container {
   display: flex;
   justify-content: flex-end;
@@ -207,7 +194,7 @@
 }
 
 button[type="submit"] {
-  background-color: #007bff;
+  background-color: #26a69a;
   color: white;
   border: none;
   padding: 10px 22px;
@@ -218,7 +205,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #00796b;
 }
 
 .cancel-button {
@@ -236,13 +223,13 @@ button[type="submit"]:hover {
   background-color: #bbb;
 }
 
-/* Texte quand pas d'agents */
 .agent-container p {
   margin-top: 40px;
   font-size: 16px;
   color: #666;
   text-align: center;
 }
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -260,6 +247,6 @@ button[type="submit"]:hover {
 }
 
 .pagination button.active {
-  background-color: #007bff;
+  background-color: #26a69a;
   color: white;
 }

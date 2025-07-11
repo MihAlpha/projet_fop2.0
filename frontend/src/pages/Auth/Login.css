@@ -1,60 +1,96 @@
-/* src/pages/Login.css */
-
 /* Fond général */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #e3f2fd, #90caf9);
+  background: none !important; /* on désactive background sur body */
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
 
-/* Container principal */
-.login-container {
-  background-color: #ffffff;
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 35px;
+/* Background appliqué sur le wrapper global */
+.login-wrapper-formel {
+  background: linear-gradient(135deg, #d0f0ec, #81cfd9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Bloc horizontal contenant les deux parties */
+.login-card {
+  display: flex;
+  flex-direction: row;
+  width: 500px;
+  min-height: 400px;
   border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
 }
 
-.login-container:hover {
-  transform: scale(1.01);
+/* Partie gauche : logo + Connexion */
+.login-left {
+  background-color: #80cbc4; /* bleu-vert */
+  width: 35%;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.login-container h2 {
-  margin-bottom: 25px;
-  color: #0d47a1;
-  font-size: 26px;
+.login-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  margin-top: -100px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15)
+}
+
+.login-title {
+  font-size: 22px;
+  color: #004d40; /* vert foncé */
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Partie droite : formulaire */
+.login-right {
+  width: 65%;
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Container pour chaque champ */
 .input-container,
 .password-container {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 55px;
 }
 
-/* Champ de texte */
-.input-container input,
-.password-container input {
-  width: 100%;
-  padding: 12px 40px 12px 12px; /* espace pour l'icône */
-  border: 1px solid #b0bec5;
-  border-radius: 8px;
+/* Inputs */
+.login-right input[type="text"],
+.login-right input[type="password"] {
+  background-color: #ffffff;
+  border: 1px solid #4db6ac; /* bleu-vert clair */
+  color: #004d40;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
   box-sizing: border-box;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Focus sur les champs */
-.input-container input:focus,
-.password-container input:focus {
-  border-color: #1976d2;
-  outline: none;
+.login-right input[type="text"]:focus,
+.login-right input[type="password"]:focus {
+  border-color: #00796b;
 }
 
 /* Icône pour montrer/cacher le mot de passe */
@@ -75,21 +111,22 @@ body {
 }
 
 /* Bouton connexion */
-.login-container button {
+.login-right button {
   width: 100%;
   padding: 12px;
-  background-color: #1976d2;
-  color: white;
+  background-color: #00796b !important; /* vert foncé */
+  color: white !important;
   border: none;
   border-radius: 8px;
   font-size: 17px;
   cursor: pointer;
   margin-top: 10px;
+  margin-left: 0px;
   transition: background-color 0.3s ease;
 }
 
-.login-container button:hover {
-  background-color: #125aa0;
+.login-right button:hover {
+  background-color: #004d40 !important;
 }
 
 /* Message d'erreur */
@@ -107,19 +144,19 @@ body {
 .extra-options {
   margin-top: 20px;
   font-size: 14px;
-  color: #555;
+  color: #555555;
 }
 
 .extra-options a {
   display: inline-block;
   margin: 6px 8px;
-  color: #1976d2;
+  color: #00796b !important; /* vert foncé */
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .extra-options a:hover {
-  color: #0d47a1;
+  color: #004d40 !important;
   text-decoration: underline;
 }
 
@@ -130,46 +167,43 @@ body {
   text-decoration: none;
 }
 
-/* Container bouton retour */
-.button-container {
+/* Bouton Annuler (Accueil) en dehors du bloc */
+.cancel-button-container {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  margin-top: 30px;
 }
 
-/* Bouton retour accueil */
-.back-home-btn {
+.cancel-button {
   padding: 10px 25px;
-  background-color: #003366;
-  color: white;
+  background-color: #455a64;
+  color: #fff;
   border-radius: 8px;
-  text-decoration: none;
   font-weight: bold;
+  text-decoration: none;
   transition: background-color 0.3s ease;
 }
 
-.back-home-btn:hover {
-  background-color: #005fa3;
+.cancel-button:hover {
+  background-color: #263238;
 }
 
-/* Responsive pour mobile */
+/* Responsive */
 @media (max-width: 600px) {
-  .login-container {
-    margin: 40px 20px;
-    padding: 25px;
+  .login-card {
+    width: 90vw;
+    min-height: auto;
+    flex-direction: column;
   }
-
-  .login-container h2 {
-    font-size: 22px;
-  }
-
-  .input-container input,
-  .password-container input {
+  
+  .login-left,
+  .login-right {
     width: 100%;
+    padding: 20px;
   }
 
-  .back-home-btn {
-    width: 100%;
-    text-align: center;
+  .login-wrapper-formel {
+    min-height: auto;
+    padding: 20px 0;
   }
 }

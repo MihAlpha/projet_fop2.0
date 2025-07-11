@@ -1,14 +1,14 @@
 :root {
-  --soft-blue: #4f7ccf;
-  --sidebar-bg: #3b5998;
+  --soft-blue: #19776e; /* Remplacé par bleu-vert */
+  --sidebar-bg: #167269; /* Bleu-vert foncé */
   --card-bg: #ffffff;
   --text-dark: #1e293b;
-  --hover-bg: #34548c;
+  --hover-bg: #0f534b; /* Survol plus foncé */
 }
 
 .superadmin-container {
   display: flex;
-  background-color: #f7fafd;
+  background-color: #f0fdfa;
   min-height: 100vh;
 }
 
@@ -121,6 +121,7 @@ h2 {
   margin-bottom: 15px;
   color: var(--text-dark);
 }
+
 .sidebar ul li a {
   display: flex;
   align-items: center;
@@ -135,10 +136,10 @@ h2 {
 
 .notification-badge {
   position: absolute;
-  margin-top:145px;
-  margin-left:12px;
+  margin-top: 145px;
+  margin-left: 12px;
   top: -6px;
-  left: 16px; /* ou ajuste selon où tu veux le badge exactement */
+  left: 16px;
   background-color: red;
   color: white;
   border-radius: 50%;
@@ -148,10 +149,3 @@ h2 {
   z-index: 100;
   line-height: 1;
 }
-
-
-
-
-
-
-
