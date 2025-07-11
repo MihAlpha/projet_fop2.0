@@ -19,28 +19,52 @@ class AgentInterface extends Component {
   }
 
   componentDidMount() {
-    const agentId = localStorage.getItem('agent_id');
-    fetch(`http://localhost:8000/api/agent/${agentId}/`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ agent: data }));
+    // 🟢 Récupère l'ID depuis l'URL : /agent-interface/93
+    const pathParts = window.location.pathname.split('/');
+    const agentId = pathParts[pathParts.length - 1];
 
-    fetch(`http://localhost:8000/api/evenements-du-jour/?agent_id=${agentId}`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ evenementsDuJour: data }));
+    if (!agentId) {
+      console.error("❌ agent_id est introuvable dans l’URL");
+      return;
+    }
+
+    localStorage.setItem('agent_id', agentId); // au cas où tu veux l’utiliser ailleurs
+
+    // 🔵 Fetch les infos de l’agent
+    fetch(`http://localhost:8000/api/agents/${agentId}/`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la récupération de l'agent");
+        return res.json();
+      })
+      .then((data) => this.setState({ agent: data }))
+      .catch((err) => console.error("❌ Erreur fetch agent:", err));
+
+    // 🔵 Fetch les événements du jour
+    fetch(`http://localhost:8000/api/evenements/?agent_id=${agentId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la récupération des événements");
+        return res.json();
+      })
+      .then((data) => this.setState({ evenementsDuJour: data }))
+      .catch((err) => console.error("❌ Erreur fetch événements:", err));
   }
 
   afficherDossier = (evenement) => {
     const agentId = this.state.agent?.id;
     const type = evenement.type_evenement;
 
-    fetch(`http://localhost:8000/api/verifier-signature/?agent_id=${agentId}&evenement=${type}&nom_dossier`)
-      .then((res) => res.json())
+    fetch(`http://localhost:8000/api/verifier-signature/?agent_id=${agentId}&evenement=${type}&nom_dossier=${evenement.nom_dossier}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de la vérification de signature");
+        return res.json();
+      })
       .then((data) => {
         this.setState({
           dossierVisible: evenement,
           dossierSigne: data.signature_existe,
         });
-      });
+      })
+      .catch((err) => console.error("❌ Erreur fetch signature:", err));
   };
 
   handleFermer = () => {
@@ -64,10 +88,14 @@ class AgentInterface extends Component {
         signature: signatureImage,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Erreur lors de l’enregistrement de la signature");
+        return res.json();
+      })
       .then(() => {
         this.setState({ dossierSigne: true });
-      });
+      })
+      .catch((err) => console.error("❌ Erreur enregistrement signature:", err));
   };
 
   renderDossier() {
@@ -82,7 +110,7 @@ class AgentInterface extends Component {
     const composants = {
       "Attestation de performance": <AttestationDePerformance {...props} />,
       "Contrat modifié": <ContratModifie {...props} />,
-      // Ajoute ici tous les autres types de dossiers que tu as
+      // Ajoute ici tous les autres types de dossiers
     };
 
     return composants[dossierVisible.nom_dossier] || <p>Dossier inconnu</p>;
@@ -121,7 +149,10 @@ class AgentInterface extends Component {
             {!dossierSigne && (
               <div className="signature-zone">
                 <h4>Signature :</h4>
-                <SignaturePad ref={this.signaturePadRef} canvasProps={{ width: 500, height: 150, className: 'sigCanvas' }} />
+                <SignaturePad
+                  ref={this.signaturePadRef}
+                  canvasProps={{ width: 500, height: 150, className: 'sigCanvas' }}
+                />
                 <button onClick={this.handleValiderSignature}>Valider</button>
               </div>
             )}
