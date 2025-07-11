@@ -17,6 +17,7 @@ from .views import (
     get_signature,
     envoyer_email_si_non_signe,
     verifier_signature,
+    evenements_du_jour
 )
 
 router = DefaultRouter()
@@ -40,5 +41,6 @@ urlpatterns = [
     path('get_signature/', get_signature, name='get_signature'),
     path('envoyer-email-signature/', envoyer_email_si_non_signe, name='envoyer_email_si_non_signe'),
     path('verifier-signature/', verifier_signature, name='verifier_signature'),
+    path('evenements-du-jour/', evenements_du_jour, name='evenements_du_jour'),
 
 ]

@@ -518,3 +518,14 @@ def resend_reset_code(request):
         return Response({'message': 'Nouveau code envoyé avec succès.'}, status=200)
     except User.DoesNotExist:
         return Response({'message': 'Utilisateur non trouvé.'}, status=404)
+
+@api_view(['GET'])
+def evenements_du_jour(request):
+    agent_id = request.GET.get('agent_id')
+    if not agent_id:
+        return Response({"error": "agent_id manquant"}, status=400)
+
+    today = date.today()
+    evenements = Evenement.objects.filter(agent__id=agent_id, date=today)
+    serializer = EvenementSerializer(evenements, many=True)
+    return Response(serializer.data)

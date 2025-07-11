@@ -40,7 +40,7 @@ class AgentInterface extends Component {
       .catch((err) => console.error("❌ Erreur fetch agent:", err));
 
     // 🔵 Fetch les événements du jour
-    fetch(`http://localhost:8000/api/evenements/?agent_id=${agentId}`)
+    fetch(`http://localhost:8000/api/evenements-du-jour/?agent_id=${agentId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des événements");
         return res.json();
