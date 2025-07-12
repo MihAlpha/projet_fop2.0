@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaEye, FaEyeSlash } from "react-icons/fa";
 import "./ChangerMotDePasse.css";
 
 const ChangerMotDePasse = () => {
@@ -10,6 +10,9 @@ const ChangerMotDePasse = () => {
   const [confirmation, setConfirmation] = useState("");
   const [message, setMessage] = useState("");
   const [typeMessage, setTypeMessage] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -105,53 +108,67 @@ const ChangerMotDePasse = () => {
     }
   };
 
-  return (
-    <div className="changer-mdp-container">
-      <button
-        onClick={() => navigate(-1)}
-        className="close-button"
-        aria-label="Retour"
-      >
-        <FaTimes />
-      </button>
+ return (
+  <div className="changer-container">
+    <button
+      onClick={() => navigate(-1)}
+      className="close-button"
+      aria-label="Retour"
+    >
+      <FaTimes />
+    </button>
 
-      <form className="changer-mdp-form" onSubmit={handleSubmit}>
-        <h2>Changer mon mot de passe</h2>
-        <p className="description">
-          Utilisez un mot de passe sécurisé contenant lettres, chiffres et
-          caractères spéciaux.
-        </p>
+    <form onSubmit={handleSubmit}>
+      <h2>Changer mon mot de passe</h2>
+      <p className="description">
+        Utilisez un mot de passe sécurisé contenant lettres, chiffres et
+        caractères spéciaux.
+      </p>
 
-        {message && <div className={`message ${typeMessage}`}>{message}</div>}
+      {message && <div className={`message ${typeMessage}`}>{message}</div>}
 
-        <label>Mot de passe actuel</label>
-        <input
-          type="password"
-          value={ancienMotDePasse}
-          onChange={(e) => setAncienMotDePasse(e.target.value)}
-          required
-        />
+      <label>Mot de passe actuel</label>
+        <div className="password-input">
+          <input
+            type={showOldPassword ? "text" : "password"}
+            value={ancienMotDePasse}
+            onChange={(e) => setAncienMotDePasse(e.target.value)}
+            required
+          />
+          <span className="eye-icon" onClick={() => setShowOldPassword(!showOldPassword)}>
+            {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
 
         <label>Nouveau mot de passe</label>
-        <input
-          type="password"
-          value={nouveauMotDePasse}
-          onChange={(e) => setNouveauMotDePasse(e.target.value)}
-          required
-        />
+        <div className="password-input">
+          <input
+            type={showNewPassword ? "text" : "password"}
+            value={nouveauMotDePasse}
+            onChange={(e) => setNouveauMotDePasse(e.target.value)}
+            required
+          />
+          <span className="eye-icon" onClick={() => setShowNewPassword(!showNewPassword)}>
+            {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
 
         <label>Confirmer le nouveau mot de passe</label>
-        <input
-          type="password"
-          value={confirmation}
-          onChange={(e) => setConfirmation(e.target.value)}
-          required
-        />
-
-        <button type="submit">Valider le changement</button>
-      </form>
-    </div>
-  );
+        <div className="password-input">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            value={confirmation}
+            onChange={(e) => setConfirmation(e.target.value)}
+            required
+          />
+          <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+      <button type="submit">Valider le changement</button>
+    </form>
+  </div>
+);
 };
 
 export default ChangerMotDePasse;
