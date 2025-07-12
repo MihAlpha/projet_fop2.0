@@ -155,16 +155,10 @@ class AgentInterface extends Component {
           <div className="dossier-container">
             <div className="dossier-header">
               <button onClick={this.handleFermer}>Fermer</button>
-              <button onClick={() => window.print()}>Télécharger</button>
             </div>
-
             <div className="dossier-contenu">
               {this.renderDossier()}
             </div>
-
-            {dossierSigne && (
-              <p className="signature-ok">✅ Dossier déjà signé</p>
-            )}
           </div>
         )}
       </div>
