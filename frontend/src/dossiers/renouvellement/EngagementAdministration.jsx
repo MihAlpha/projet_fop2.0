@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../img_tête.png';
-import SignaturePad from '../../components/SignaturePad';
+import SignaturePad from '../../components/Signature/SignaturePad';
 
 const EngagementAdministration = ({ agent, onSignatureValidee }) => {
   const today = new Date().toLocaleDateString('fr-FR');
