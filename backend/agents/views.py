@@ -13,6 +13,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import AllowAny
 from rest_framework.serializers import ModelSerializer
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import update_session_auth_hash
 
 from .models import Agent, ResetCode, Notification, PendingRequest, Evenement, DossierSignature
 from .serializers import AgentSerializer, NotificationSerializer, PendingRequestSerializer, EvenementSerializer
@@ -49,6 +53,35 @@ class AgentViewSet(viewsets.ModelViewSet):
     serializer_class = AgentSerializer
     permission_classes = [AllowAny]
 
+class ChangerMotDePasseView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        utilisateur = request.user
+        ancien_mdp = request.data.get("ancien_mot_de_passe")
+        nouveau_mdp = request.data.get("nouveau_mot_de_passe")
+        confirmation = request.data.get("confirmation")
+
+        # Vérifier que les champs sont présents
+        if not ancien_mdp or not nouveau_mdp or not confirmation:
+            return Response({"error": "Tous les champs sont obligatoires."}, status=400)
+
+        # Vérifier correspondance nouveau mot de passe et confirmation
+        if nouveau_mdp != confirmation:
+            return Response({"error": "Le nouveau mot de passe et la confirmation ne correspondent pas."}, status=400)
+
+        # Vérifier que l'ancien mot de passe est correct
+        if not utilisateur.check_password(ancien_mdp):
+            return Response({"error": "L'ancien mot de passe est incorrect."}, status=400)
+
+        # Modifier le mot de passe (Django hash automatiquement)
+        utilisateur.set_password(nouveau_mdp)
+        utilisateur.save()
+
+        # Mise à jour de la session pour rester connecté
+        update_session_auth_hash(request, utilisateur)
+
+        return Response({"success": "Mot de passe changé avec succès."}, status=200)
 # ===== VUE NOTIFICATIONS =====
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all().order_by('-id')
@@ -385,12 +418,19 @@ def login_user(request):
     if user:
         if not user.is_active:
             return Response({'message': "Votre compte est désactivé par l'administrateur."}, status=403)
+
+        # Générer les tokens JWT
+        refresh = RefreshToken.for_user(user)
+
         return Response({
             'message': 'Connexion réussie',
             'username': user.username,
             'email': user.email,
             'is_superuser': user.is_superuser,
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
         }, status=200)
+
     else:
         return Response({'message': 'Vous n’êtes pas autorisé par l’administrateur !'}, status=401)
 

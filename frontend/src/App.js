@@ -12,7 +12,7 @@ import HomePage from './pages/Home/HomePage';
 import AboutPage from './pages/About/AboutPage';
 import Evenements from "./pages/SuperAdmin/Evenement/Evenement";
 import AgentInterface from './pages/Agent/AgentInterface';
-
+import ChangerMotDePasse from './components/Parametre/ChangerMotDePasse';
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/evenements" element={<Evenements />} />
         <Route path="/agent-interface/:id" element={<AgentInterface />} />
+        <Route path="/changer-mot-de-passe" element={<ChangerMotDePasse />} />
       </Routes>
     </BrowserRouter>
   );

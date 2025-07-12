@@ -17,8 +17,11 @@ from .views import (
     get_signature,
     envoyer_email_si_non_signe,
     verifier_signature,
-    evenements_du_jour
+    evenements_du_jour,
+    ChangerMotDePasseView,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 router = DefaultRouter()
 router.register(r'agents', AgentViewSet)
@@ -42,5 +45,7 @@ urlpatterns = [
     path('envoyer-email-signature/', envoyer_email_si_non_signe, name='envoyer_email_si_non_signe'),
     path('verifier-signature/', verifier_signature, name='verifier_signature'),
     path('evenements-du-jour/', evenements_du_jour, name='evenements_du_jour'),
-
+    path('changer-mot-de-passe/', ChangerMotDePasseView.as_view(), name='changer_mot_de_passe'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

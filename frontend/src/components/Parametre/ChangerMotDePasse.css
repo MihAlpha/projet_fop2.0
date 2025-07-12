@@ -1,0 +1,74 @@
+.changer-container {
+  max-width: 400px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.changer-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #19776e;
+}
+
+.changer-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.changer-container input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.changer-container button {
+  background-color: #19776e;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.changer-container button:hover {
+  background-color: #0f534b;
+}
+
+.success {
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.password-input input {
+  width: 100%;
+  padding: 10px 40px 10px 10px; /* espace pour l'icône à droite */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.2rem;
+}

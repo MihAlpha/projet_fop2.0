@@ -30,10 +30,14 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
+        // Enregistrer les tokens
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
         localStorage.setItem('user', JSON.stringify(data));
+
         navigate(data.is_superuser ? '/superadmin' : '/admin');
       } else {
-        setError(data.error || 'Identifiant ou mot de passe incorrect.');
+        setError(data.message || 'Identifiant ou mot de passe incorrect.');
       }
     } catch (err) {
       console.error('Erreur de connexion :', err);
