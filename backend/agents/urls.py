@@ -19,6 +19,7 @@ from .views import (
     verifier_signature,
     evenements_du_jour,
     ChangerMotDePasseView,
+    statistiques_evenements_du_jour
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -48,4 +49,5 @@ urlpatterns = [
     path('changer-mot-de-passe/', ChangerMotDePasseView.as_view(), name='changer_mot_de_passe'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('statistiques-evenements-du-jour/', statistiques_evenements_du_jour),
 ]

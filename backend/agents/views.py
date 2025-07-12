@@ -569,3 +569,15 @@ def evenements_du_jour(request):
     evenements = Evenement.objects.filter(agent__id=agent_id, date=today)
     serializer = EvenementSerializer(evenements, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def statistiques_evenements_du_jour(request):
+    today = date.today()
+    evenements = Evenement.objects.filter(date=today)
+
+    stats = defaultdict(int)
+    for evt in evenements:
+        stats[evt.type_evenement] += 1
+
+    return Response(dict(stats), status=200)

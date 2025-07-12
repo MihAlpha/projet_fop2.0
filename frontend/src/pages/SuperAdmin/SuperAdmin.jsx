@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   FaUsers,
   FaUserShield,
@@ -7,6 +7,8 @@ import {
   FaCog,
   FaKey,
   FaLandmark,
+  FaUser, 
+  FaSignOutAlt
 } from "react-icons/fa";
 import {
   BarChart,
@@ -20,7 +22,8 @@ import {
 } from "recharts";
 import axios from "axios";
 import "./SuperAdmin.css";
-import logo from "./mtefp_logo.jpg"; // chemin du logo
+import CamembertEvenementsDuJour from "../../components/Dash/CamembertEvenementsDuJour";
+import logo from "./mtefp_logo.jpg"; 
 
 const logoUrl = logo;
 
@@ -31,6 +34,7 @@ const SuperAdmin = () => {
   const [hasUnreadAdminNotification, setHasUnreadAdminNotification] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [openGestion, setOpenGestion] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const currentYear = new Date().getFullYear();
 
@@ -85,6 +89,21 @@ const SuperAdmin = () => {
     (item) => Number(item.year) === currentYear
   );
 
+  const menuRef = useRef(null);
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setMenuOpen(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
   return (
     <>
       <div className="dashboard-header">
@@ -92,11 +111,29 @@ const SuperAdmin = () => {
         <h1 className="ministry-name">
           Ministère du Travail, de l’Emploi et de la Fonction Publique
         </h1>
-         <div className="menu-icon">
-            <span></span>
-            <span></span>
-            <span></span>
+         <div className="menu-container" ref={menuRef}>
+            <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            {menuOpen && (
+              <div className="dropdown-menu">
+                <button onClick={() => window.location.href = "/profil"}>
+                  <FaUser className="dropdown-icon" /> Voir mon profil
+                </button>
+                <button onClick={() => {
+                  localStorage.clear();
+                  window.location.href = "/login";
+                }}>
+                  <FaSignOutAlt className="dropdown-icon" /> Se déconnecter
+                </button>
+              </div>
+            )}
           </div>
+
+
       </div>
 
       <div className="superadmin-container">
@@ -209,29 +246,47 @@ const SuperAdmin = () => {
 
           <div className="chart-section">
             <h3>Prévision des événements pour l’année {currentYear}</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={filteredEventStats}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Legend
-                  payload={[
-                    { value: "Avenant", type: "square", color: "#3b82f6" },
-                    { value: "Renouvellement", type: "square", color: "#f59e0b" },
-                    { value: "Intégration", type: "square", color: "#ef4444" },
-                    { value: "Avancement", type: "square", color: "#14b8a6" },
-                    { value: "Retraite", type: "square", color: "#22c55e" },
-                  ]}
-                />
-                <Bar dataKey="Avenant" fill="#3b82f6" name="Avenant" />
-                <Bar dataKey="Renouvellement" fill="#f59e0b" name="Renouvellement" />
-                <Bar dataKey="Intégration" fill="#ef4444" name="Intégration" />
-                <Bar dataKey="Avancement" fill="#14b8a6" name="Avancement" />
-                <Bar dataKey="Retraite" fill="#22c55e" name="Retraite" />
-              </BarChart>
-            </ResponsiveContainer>
+
+            <div style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "2rem",
+              alignItems: "flex-start",
+            }}>
+              <div style={{ flex: 1, minWidth: "300px" }}>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={filteredEventStats}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis allowDecimals={false} />
+                    <Tooltip />
+                    <Legend
+                      wrapperStyle={{
+                        fontSize: "16px",             
+                      }}
+                      payload={[
+                        { value: "Avenant", type: "square", color: "#3b82f6" },
+                        { value: "Renouvellement", type: "square", color: "#f59e0b" },
+                        { value: "Intégration", type: "square", color: "#ef4444" },
+                        { value: "Avancement", type: "square", color: "#14b8a6" },
+                        { value: "Retraite", type: "square", color: "#22c55e" },
+                      ]}
+                    />
+                    <Bar dataKey="Avenant" fill="#3b82f6" name="Avenant" />
+                    <Bar dataKey="Renouvellement" fill="#f59e0b" name="Renouvellement" />
+                    <Bar dataKey="Intégration" fill="#ef4444" name="Intégration" />
+                    <Bar dataKey="Avancement" fill="#14b8a6" name="Avancement" />
+                    <Bar dataKey="Retraite" fill="#22c55e" name="Retraite" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div style={{ flex: 1, minWidth: "300px" }}>
+                <CamembertEvenementsDuJour />
+              </div>
+            </div>
           </div>
+
         </main>
       </div>
     </>
