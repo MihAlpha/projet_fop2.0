@@ -172,9 +172,9 @@ h2 {
 }
 
 .arrow {
-  margin-left: auto;
+  margin-left: 30px;
   font-size: 0.8rem;
-  color: #555;
+  color: #ffffff;
 }
 
 .submenu a {
@@ -195,4 +195,10 @@ h2 {
 
 .submenu .icon-wrapper .icon {
   font-size: 1.2rem !important; 
+  margin-left: -6px;
+}
+.icon-1 {
+  position: relative;
+  font-size: 32px;
+  margin-left: 9px;
 }

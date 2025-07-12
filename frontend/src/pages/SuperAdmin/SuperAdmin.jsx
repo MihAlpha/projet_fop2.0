@@ -109,7 +109,7 @@ console.log("Ce qu'il y a pour 2025 : ", sample2025);
           <li className="sidebar-link" onClick={() => setOpenGestion(!openGestion)}>
             <div className="link-wrapper">
               <span className="icon-wrapper">
-                <FaUsers className="icon" />
+                <FaUsers className="icon-1" />
               </span>
               <span className="link-text">Gestion</span>
               <span className="arrow">{openGestion ? "▲" : "▼"}</span>
@@ -148,7 +148,7 @@ console.log("Ce qu'il y a pour 2025 : ", sample2025);
         <li className="sidebar-link" onClick={() => setOpenSettings(!openSettings)}>
           <div className="link-wrapper">
             <span className="icon-wrapper">
-              <FaCog className="icon" />
+              <FaCog className="icon-1" />
             </span>
             <span className="link-text">Paramètres</span>
             <span className="arrow">{openSettings ? "▲" : "▼"}</span>
