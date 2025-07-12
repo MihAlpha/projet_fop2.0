@@ -4,6 +4,9 @@ import {
   FaUserShield,
   FaCalendarAlt,
   FaChartBar,
+  FaCog,
+  FaKey,
+  FaLandmark,
 } from "react-icons/fa";
 import {
   BarChart,
@@ -23,6 +26,8 @@ const SuperAdmin = () => {
   const [eventStatsByYear, setEventStatsByYear] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [hasUnreadAdminNotification, setHasUnreadAdminNotification] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
+  const [openGestion, setOpenGestion] = useState(false);
 
   const currentYear = new Date().getFullYear();
 
@@ -101,24 +106,35 @@ console.log("Ce qu'il y a pour 2025 : ", sample2025);
             </a>
           </li>
 
-          <li>
-            <a href="/agents">
+          <li className="sidebar-link" onClick={() => setOpenGestion(!openGestion)}>
+            <div className="link-wrapper">
               <span className="icon-wrapper">
                 <FaUsers className="icon" />
               </span>
-              <span className="link-text">Agents</span>
-            </a>
+              <span className="link-text">Gestion</span>
+              <span className="arrow">{openGestion ? "▲" : "▼"}</span>
+            </div>
           </li>
-
-          <li style={{ position: "relative" }}>
-            <a href="/admins" onClick={handleAdminClick}>
-              <FaUserShield className="icon" />
-              {hasUnreadAdminNotification && (
-                <span className="notification-badge">{notificationCount}</span>
-              )}
-              <span className="link-text">Admins</span>
-            </a>
-          </li>
+            {openGestion && (
+              <div className="submenu">
+                <li>
+                  <a href="/agents">
+                    <span className="icon-wrapper">
+                      <FaUsers className="icon" />
+                    </span>
+                    <span className="link-text">Agents</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/admins">
+                    <span className="icon-wrapper">
+                      <FaUserShield className="icon" />
+                    </span>
+                    <span className="link-text">Admins</span>
+                  </a>
+                </li>
+              </div>
+            )}
 
           <li>
             <a href="/evenements">
@@ -126,6 +142,39 @@ console.log("Ce qu'il y a pour 2025 : ", sample2025);
               <span className="link-text">Événements</span>
             </a>
           </li>
+        </ul>
+
+        <ul>
+        <li className="sidebar-link" onClick={() => setOpenSettings(!openSettings)}>
+          <div className="link-wrapper">
+            <span className="icon-wrapper">
+              <FaCog className="icon" />
+            </span>
+            <span className="link-text">Paramètres</span>
+            <span className="arrow">{openSettings ? "▲" : "▼"}</span>
+          </div>
+        </li>
+          {openSettings && (
+            <div className="submenu">
+              <li>
+                <a href="/changer-mot-de-passe">
+                  <span className="icon-wrapper">
+                    <FaKey className="icon" />
+                  </span>
+                  <span className="link-text">Changer mot de passe</span>
+                </a>
+              </li>
+              <li>
+                <a href="/changer-logo">
+                  <span className="icon-wrapper">
+                    <FaLandmark className="icon" />
+                  </span>
+                  <span className="link-text">Modifier ministère</span>
+                </a>
+              </li>
+            </div>
+          )}
+
         </ul>
       </aside>
 

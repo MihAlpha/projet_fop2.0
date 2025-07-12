@@ -54,7 +54,7 @@
 }
 
 .sidebar .icon {
-  font-size: 1.5rem;
+  font-size: 1.9rem !important;
   min-width: 30px;
   text-align: center;
 }
@@ -148,4 +148,51 @@ h2 {
   padding: 1px 5px;
   z-index: 100;
   line-height: 1;
+}
+
+.sidebar-link {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 0 10px;
+  border-radius: 20px;
+  color: white;
+}
+
+.sidebar-link:hover {
+  background-color: var(--hover-bg);
+}
+
+.link-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.submenu a {
+  font-size: 13px;
+  padding: 7px 9px 7px 15px; 
+  margin: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.05); 
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.submenu a:hover {
+  background-color: var(--hover-bg);
+}
+
+.submenu .icon-wrapper .icon {
+  font-size: 1.2rem !important; 
 }
