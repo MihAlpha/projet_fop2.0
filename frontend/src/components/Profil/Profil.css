@@ -1,0 +1,66 @@
+.profil-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background-color: #f4fafe;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.profil-title {
+  color: #0e7c73 !important;
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.profil-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  height: 250px;
+}
+
+.profil-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-top: -100px;
+  margin-left: -90px;
+  object-fit: cover;
+  border: 3px solid #0e7c73;
+}
+
+.profil-details {
+  text-align: left;
+  margin-left: 50px;
+}
+
+.profil-details p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #333;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  margin-left: -80px;
+  background-color: #007b91;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #005f70;
+}
+
