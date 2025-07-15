@@ -18,7 +18,6 @@ const CamembertEvenementsDuJour = () => {
     fetch("http://localhost:8000/api/statistiques-evenements-du-jour/")
       .then((res) => res.json())
       .then((json) => {
-        // Transformer les données pour recharts
         const chartData = Object.entries(json).map(([type, count]) => ({
           name: type,
           value: count,

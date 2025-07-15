@@ -125,10 +125,11 @@ useEffect(() => {
                 </button>
                 <button onClick={() => {
                   localStorage.clear();
-                  window.location.href = "/login";
+                  window.location.replace("/login"); // Redirection sécurisée sans possibilité de revenir
                 }}>
                   <FaSignOutAlt className="dropdown-icon" /> Se déconnecter
                 </button>
+
               </div>
             )}
           </div>

@@ -30,12 +30,12 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Enregistrer les tokens
+        
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         localStorage.setItem('user', JSON.stringify(data));
 
-        navigate(data.is_superuser ? '/superadmin' : '/admin');
+        navigate(data.is_superuser ? '/superadmin' : '/admin' , { replace: true });
       } else {
         setError(data.message || 'Identifiant ou mot de passe incorrect.');
       }
@@ -96,7 +96,6 @@ function Login() {
         </div>
       </div>
 
-      {/* Bouton Annuler hors du bloc */}
       <div className="cancel-button-container">
         <Link to="/" className="cancel-button">Accueil ♥</Link>
       </div>
