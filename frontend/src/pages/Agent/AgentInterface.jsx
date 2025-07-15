@@ -48,7 +48,6 @@ class AgentInterface extends Component {
   }
 
   componentDidMount() {
-    // ✅ Définir le rôle "agent" si non présent
     if (!localStorage.getItem('role')) {
       localStorage.setItem('role', 'agent');
     }
@@ -125,40 +124,52 @@ class AgentInterface extends Component {
 
     return (
       <div className="agent-container">
-        <h2>Bienvenue, {agent?.prenom} {agent?.nom}</h2>
-        <p><strong>Email :</strong> {agent?.email}</p>
-        <p><strong>Matricule :</strong> {agent?.im}</p>
+        <div className="profil-box">
+          <h2 className="welcome-text">Bienvenue, {agent?.prenom} {agent?.nom}</h2>
+          <p><strong>Email :</strong> {agent?.email}</p>
+          <p><strong>Matricule :</strong> {agent?.im}</p>
+        </div>
 
-        <h3>Événements du jour</h3>
-        <ul>
-          {evenementsDuJour.map((event) => (
-            <li key={event.id}>
-              <strong>{event.type_evenement}</strong>
-              <button onClick={() => this.afficherDossier(event)}>Voir les dossiers</button>
+        <div className="evenements-section">
+          <h3>Événements du jour</h3>
+          <ul className="event-list">
+            {evenementsDuJour.map((event) => (
+              <li key={event.id} className="event-item">
+                <div className="event-title">
+                  <strong>{event.type_evenement}</strong>
+                  <button className="voir-dossier-btn" onClick={() => this.afficherDossier(event)}>Voir les dossiers</button>
+                </div>
 
-              {typeSelectionne === event.type_evenement && (
-                <ul>
-                  {documentsParType[event.type_evenement]?.map((doc) => (
-                    <li key={doc}>
-                      <button onClick={() => this.handleChoisirDocument(doc)}>
-                        {doc}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+                {typeSelectionne === event.type_evenement && (
+                  <ul className="document-list">
+                    {documentsParType[event.type_evenement]?.map((doc) => (
+                      <li key={doc}>
+                        <button className="document-btn" onClick={() => this.handleChoisirDocument(doc)}>
+                          {doc}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {dossierNom && (
           <div className="dossier-container">
             <div className="dossier-header">
-              <button onClick={this.handleFermer}>Fermer</button>
+              <button className="fermer-btn" onClick={this.handleFermer}>Fermer</button>
             </div>
             <div className="dossier-contenu">
               {this.renderDossier()}
             </div>
+
+            {dossierSigne && (
+              <div className="signature-confirmation">
+                ✅ Signature déjà enregistrée pour ce dossier.
+              </div>
+            )}
           </div>
         )}
       </div>

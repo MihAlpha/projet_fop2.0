@@ -211,12 +211,6 @@ useEffect(() => {
                   </a>
                 </li>
                 <li>
-                  <a href="/changer-logo">
-                    <span className="icon-wrapper">
-                      <FaLandmark className="icon" />
-                    </span>
-                    <span className="link-text">Modifier ministère</span>
-                  </a>
                 </li>
               </div>
             )}
