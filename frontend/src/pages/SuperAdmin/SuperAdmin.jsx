@@ -8,7 +8,8 @@ import {
   FaKey,
   FaLandmark,
   FaUser, 
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaEnvelope
 } from "react-icons/fa";
 import {
   BarChart,
@@ -210,10 +211,16 @@ useEffect(() => {
                     <span className="link-text">Changer mot de passe</span>
                   </a>
                 </li>
-                <li>
-                </li>
               </div>
             )}
+             <li className="sidebar-link">
+                <a href="/messages" className="link-wrapper">
+                  <span className="icon-wrapper">
+                    <FaEnvelope className="icon-1" />
+                  </span>
+                  <span className="link-text">Messagerie</span>
+                </a>
+              </li>
           </ul>
         </aside>
 

@@ -14,6 +14,7 @@ import Evenements from "./pages/SuperAdmin/Evenement/Evenement";
 import AgentInterface from './pages/Agent/AgentInterface';
 import ChangerMotDePasse from './components/Parametre/ChangerMotDePasse';
 import Profil from './components/Profil/Profil';
+import Message from './components/Message/Message';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/agent-interface/:id" element={<AgentInterface />} />
         <Route path="/changer-mot-de-passe" element={<ChangerMotDePasse />} />
         <Route path="/profil" element={<Profil />} />
+        <Route path="/messages" element={<Message />} />
       </Routes>
     </BrowserRouter>
   );

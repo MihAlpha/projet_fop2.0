@@ -46,6 +46,7 @@ class Agent(models.Model):
     grade = models.CharField(max_length=100)
     qualite = models.CharField(max_length=20, choices=QUALITE_CHOICES, default=' ')
     qualite_initiale = models.CharField(max_length=20, choices=QUALITE_CHOICES, blank=True, null=True)
+    utilisateur = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
