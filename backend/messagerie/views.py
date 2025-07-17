@@ -89,4 +89,15 @@ class ConversationDetailView(APIView):
         serializer = MessageSerializer(messages, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def agents_avec_conversation(request):
+    role = request.GET.get('role')
+    if not role:
+        return Response({"error": "Paramètre 'role' requis"}, status=400)
+
+    messages = Message.objects.filter(destinataire_role=role)
+    agent_ids = messages.values_list('expediteur_id', flat=True).distinct()
+    agents = Agent.objects.filter(id__in=agent_ids)
+    data = [{'id': agent.id, 'nom': agent.nom, 'prenom': agent.prenom} for agent in agents]
+    return Response(data)
 

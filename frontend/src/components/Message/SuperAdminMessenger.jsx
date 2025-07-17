@@ -1,125 +1,107 @@
-import React, { useState, useEffect } from "react";
-import AgentList from "./AgentList";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function SuperAdminMessenger() {
-  const [agentIdSelectionne, setAgentIdSelectionne] = useState(null);
+  const [agents, setAgents] = useState([]);
+  const [selectedAgentId, setSelectedAgentId] = useState('');
   const [messages, setMessages] = useState([]);
-  const [nouveauMessage, setNouveauMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
 
-  const superAdminId = parseInt(localStorage.getItem("user_id"));
+  // ID réel du SuperAdmin connecté (à adapter dynamiquement plus tard)
+  const superAdminId = JSON.parse(localStorage.getItem('user'))?.id;
 
-  // ✅ Récupération des messages entre SuperAdmin et Agent sélectionné
+  // Charger tous les agents disponibles
   useEffect(() => {
-    if (!agentIdSelectionne || !superAdminId) return;
+    axios
+      .get('http://localhost:8000/api/agents/') // Endpoint pour récupérer les vrais agents
+      .then((res) => setAgents(res.data))
+      .catch((err) => console.error('Erreur lors du chargement des agents', err));
+  }, []);
 
-    const url = `http://localhost:8000/api/messages/conversation/?agent_id=${agentIdSelectionne}&superadmin_id=${superAdminId}`;
+  // Charger les messages avec l’agent sélectionné
+  useEffect(() => {
+    if (!selectedAgentId || !superAdminId) return;
 
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error("Erreur lors de la récupération des messages");
-        return res.json();
-      })
-      .then((data) => setMessages(data))
-      .catch((error) => {
-        console.error("Erreur récupération messages:", error);
+    axios
+      .get(`http://localhost:8000/api/conversation/${selectedAgentId}/SuperAdmin/`)
+      .then((res) => setMessages(res.data))
+      .catch((err) => {
+        console.error('Erreur lors du chargement des messages', err);
         setMessages([]);
       });
-  }, [agentIdSelectionne, superAdminId]);
+  }, [selectedAgentId, superAdminId]);
 
-  // ✅ Envoi d’un message SuperAdmin → Agent
+  // Envoyer un message
   const envoyerMessage = () => {
-    if (!nouveauMessage.trim() || !agentIdSelectionne) return;
+    if (!newMessage.trim() || !selectedAgentId) return;
 
-    fetch("http://localhost:8000/api/messages/envoyer/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        expediteur_id: superAdminId,
-        expediteur_role: "SuperAdmin",
-        destinataire_id: agentIdSelectionne,
-        destinataire_role: "Agent",
-        contenu: nouveauMessage,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Erreur lors de l'envoi");
-        return res.json();
+    const messageData = {
+      expediteur_id: superAdminId,
+      expediteur_role: 'SuperAdmin',
+      destinataire_id: selectedAgentId,
+      destinataire_role: 'Agent',
+      contenu: newMessage,
+      date_envoi: new Date().toISOString(),
+    };
+
+    axios
+      .post('http://localhost:8000/api/messages/envoyer/', messageData)
+      .then(() => {
+        setNewMessage('');
+        // Recharger les messages après envoi
+        return axios.get(`http://localhost:8000/api/conversation/${selectedAgentId}/SuperAdmin/`);
       })
-      .then((message) => {
-        setMessages((prev) => [...prev, message]);
-        setNouveauMessage("");
-      })
-      .catch((err) => {
-        console.error("Erreur envoi message:", err);
-      });
+      .then((res) => setMessages(res.data))
+      .catch((err) => console.error('Erreur lors de l’envoi du message', err));
   };
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
-      <AgentList
-        onSelectAgent={setAgentIdSelectionne}
-        agentSelectionne={agentIdSelectionne}
-      />
+    <div className="messenger-container">
+      <h2>Messagerie SuperAdmin</h2>
 
-      <div style={{ flex: 1 }}>
-        {agentIdSelectionne ? (
-          <>
-            <div
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                height: "300px",
-                overflowY: "auto",
-                marginBottom: "10px",
-              }}
-            >
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  style={{
-                    textAlign:
-                      msg.expediteur_id === superAdminId &&
-                      msg.expediteur_role === "SuperAdmin"
-                        ? "right"
-                        : "left",
-                    margin: "5px 0",
-                    backgroundColor:
-                      msg.expediteur_id === superAdminId &&
-                      msg.expediteur_role === "SuperAdmin"
-                        ? "#dcf8c6"
-                        : "#f1f0f0",
-                    padding: "5px 10px",
-                    borderRadius: "10px",
-                    maxWidth: "70%",
-                    marginLeft:
-                      msg.expediteur_id === superAdminId &&
-                      msg.expediteur_role === "SuperAdmin"
-                        ? "auto"
-                        : "initial",
-                  }}
-                >
-                  <strong>
-                    {msg.expediteur_role === "SuperAdmin" ? "SuperAdmin" : "Agent"} :
-                  </strong>{" "}
-                  {msg.contenu}
-                </div>
-              ))}
-            </div>
+      {/* Liste déroulante des agents */}
+      <label>Choisir un agent :</label>
+      <select
+        value={selectedAgentId}
+        onChange={(e) => setSelectedAgentId(e.target.value)}
+      >
+        <option value="">-- Sélectionner un agent --</option>
+        {agents.map((agent) => (
+          <option key={agent.id} value={agent.id}>
+            {agent.nom} {agent.prenom}
+          </option>
+        ))}
+      </select>
 
-            <textarea
-              rows={3}
-              value={nouveauMessage}
-              onChange={(e) => setNouveauMessage(e.target.value)}
-              placeholder="Écrire un message..."
-              style={{ width: "100%" }}
-            />
-            <button onClick={envoyerMessage} disabled={!nouveauMessage.trim()}>
-              Envoyer
-            </button>
-          </>
+      {/* Affichage des messages */}
+      <div className="messages-section">
+        {messages.length === 0 ? (
+          <p>Aucun message pour le moment.</p>
         ) : (
-          <p>Sélectionne un agent pour commencer la conversation.</p>
+          messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={
+                msg.expediteur_role === 'SuperAdmin'
+                  ? 'message superadmin-message'
+                  : 'message agent-message'
+              }
+            >
+              <strong>{msg.expediteur_role} :</strong> {msg.contenu}
+              <div className="message-date">{new Date(msg.date_envoi).toLocaleString()}</div>
+            </div>
+          ))
         )}
+      </div>
+
+      {/* Zone de saisie */}
+      <div className="send-message-section">
+        <textarea
+          placeholder="Écrire un message..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <button onClick={envoyerMessage}>Envoyer</button>
       </div>
     </div>
   );
