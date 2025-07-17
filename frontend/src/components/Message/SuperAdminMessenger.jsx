@@ -5,17 +5,14 @@ import './SuperAdminMessenger.css';
 
 function MessengerSuperAdmin() {
   const [agents, setAgents] = useState([]);
-  // Charge agent sélectionné depuis localStorage (si existant)
   const [selectedAgentId, setSelectedAgentId] = useState(() => localStorage.getItem('selectedAgentId') || '');
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [chatOpen, setChatOpen] = useState(!!localStorage.getItem('selectedAgentId'));
   const messagesEndRef = useRef(null);
 
-  // ID SuperAdmin connecté (depuis localStorage)
   const superAdminId = JSON.parse(localStorage.getItem('user'))?.id;
 
-  // Charger liste agents au chargement composant
   useEffect(() => {
     axios
       .get('http://localhost:8000/api/agents/')
@@ -23,7 +20,6 @@ function MessengerSuperAdmin() {
       .catch(err => console.error('Erreur chargement agents:', err));
   }, []);
 
-  // Charger messages dès que selectedAgentId change ET superAdminId dispo
   useEffect(() => {
     if (!selectedAgentId || !superAdminId) {
       setMessages([]);
@@ -39,12 +35,10 @@ function MessengerSuperAdmin() {
       });
   }, [selectedAgentId, superAdminId]);
 
-  // Scroll automatique vers bas à chaque changement messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Gestion sélection agent
   const handleSelectChange = (e) => {
     const agentId = e.target.value;
     setSelectedAgentId(agentId);
@@ -52,7 +46,6 @@ function MessengerSuperAdmin() {
     setChatOpen(!!agentId);
   };
 
-  // Envoyer un message
   const sendMessage = () => {
     if (!newMessage.trim() || !selectedAgentId) return;
 
@@ -69,14 +62,12 @@ function MessengerSuperAdmin() {
       .post('http://localhost:8000/api/messages/envoyer/', messageData)
       .then(() => {
         setNewMessage('');
-        // Recharge messages directement après envoi
         return axios.get(`http://localhost:8000/api/conversation/${selectedAgentId}/SuperAdmin/`);
       })
       .then(res => setMessages(res.data))
       .catch(err => console.error('Erreur envoi message:', err));
   };
 
-  // Fermer la conversation
   const closeChat = () => {
     setSelectedAgentId('');
     setMessages([]);
@@ -150,7 +141,6 @@ function MessengerSuperAdmin() {
               value={newMessage}
               onChange={e => setNewMessage(e.target.value)}
               onKeyDown={e => {
-                // Envoyer au Enter sauf shift+enter
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
                   sendMessage();
