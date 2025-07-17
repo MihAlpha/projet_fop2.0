@@ -1,23 +1,32 @@
+:root {
+  --couleur-fond: #FFFFFF;
+  --couleur-texte: #2E2E2E;
+  --accent-orange: #E67E22;
+  --accent-marron: #6E3B1E;
+  --accent-violet: #6C3483;
+}
+
 /* Fond général */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: none !important; /* on désactive background sur body */
+  background: none !important;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
 
-/* Background appliqué sur le wrapper global */
+/* Fond dégradé plus saturé et contrasté */
 .login-wrapper-formel {
-  background: linear-gradient(135deg, #d0f0ec, #81cfd9);
+  background: linear-gradient(135deg, #f8b26a, #7b4bd6); /* orange vif vers violet profond */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  filter: brightness(1.1); /* plus lumineux */
 }
 
-/* Bloc horizontal contenant les deux parties */
+/* Carte login */
 .login-card {
   display: flex;
   flex-direction: row;
@@ -25,13 +34,13 @@ body {
   min-height: 400px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  background-color: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3); /* ombre plus marquée */
+  background-color: var(--couleur-fond);
 }
 
-/* Partie gauche : logo + Connexion */
+/* Partie gauche */
 .login-left {
-  background-color: #80cbc4; /* bleu-vert */
+  background-color: #5a2d8f; /* violet plus profond */
   width: 35%;
   padding: 20px 10px;
   display: flex;
@@ -47,17 +56,18 @@ body {
   object-fit: cover;
   margin-bottom: 15px;
   margin-top: -100px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.15)
+  box-shadow: 0 0 12px rgba(0,0,0,0.3); /* ombre plus visible */
 }
 
 .login-title {
   font-size: 22px;
-  color: #004d40; /* vert foncé */
+  color: var(--couleur-fond);
   font-weight: bold;
   margin: 0;
+  text-align: center;
 }
 
-/* Partie droite : formulaire */
+/* Partie droite */
 .login-right {
   width: 65%;
   padding: 30px 25px;
@@ -77,20 +87,20 @@ body {
 .login-right input[type="text"],
 .login-right input[type="password"] {
   background-color: #ffffff;
-  border: 1px solid #4db6ac; /* bleu-vert clair */
-  color: #004d40;
+  border: 1px solid var(--accent-marron);
+  color: var(--couleur-texte);
   font-size: 16px;
   padding: 12px;
   border-radius: 8px;
   outline: none;
-  box-sizing: border-box;
   width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: inherit;
+  box-shadow: 0 0 5px rgba(110, 59, 30, 0.3); /* légère lueur marron */
 }
 
-.login-right input[type="text"]:focus,
-.login-right input[type="password"]:focus {
-  border-color: #00796b;
+.login-right input:focus {
+  border-color: var(--accent-violet);
+  box-shadow: 0 0 8px var(--accent-violet);
 }
 
 /* Icône pour montrer/cacher le mot de passe */
@@ -114,19 +124,21 @@ body {
 .login-right button {
   width: 100%;
   padding: 12px;
-  background-color: #00796b !important; /* vert foncé */
+  background-color: var(--accent-marron) !important;
   color: white !important;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 17px;
   cursor: pointer;
   margin-top: 10px;
-  margin-left: 0px;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(110, 59, 30, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-right button:hover {
-  background-color: #004d40 !important;
+  background-color: #522a12 !important;
+  box-shadow: 0 6px 15px rgba(82, 42, 18, 0.8);
+  opacity: 0.95;
 }
 
 /* Message d'erreur */
@@ -150,13 +162,13 @@ body {
 .extra-options a {
   display: inline-block;
   margin: 6px 8px;
-  color: #00796b !important; /* vert foncé */
+  color: var(--accent-violet) !important;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .extra-options a:hover {
-  color: #004d40 !important;
+  color: var(--accent-marron) !important;
   text-decoration: underline;
 }
 
@@ -167,7 +179,7 @@ body {
   text-decoration: none;
 }
 
-/* Bouton Annuler (Accueil) en dehors du bloc */
+/* Bouton Annuler (Accueil) */
 .cancel-button-container {
   margin-top: 20px;
   display: flex;
@@ -176,16 +188,18 @@ body {
 
 .cancel-button {
   padding: 10px 25px;
-  background-color: #455a64;
-  color: #fff;
+  background-color: var(--accent-marron);
+  color: white;
   border-radius: 8px;
   font-weight: bold;
   text-decoration: none;
   transition: background-color 0.3s ease;
+  box-shadow: 0 3px 8px rgba(110, 59, 30, 0.7);
 }
 
 .cancel-button:hover {
-  background-color: #263238;
+  background-color: #522a12;
+  box-shadow: 0 5px 15px rgba(82, 42, 18, 0.9);
 }
 
 /* Responsive */
