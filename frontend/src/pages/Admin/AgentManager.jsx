@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AgentManager.css';
 import { useNavigate } from 'react-router-dom';
 import loupeImage from './rech.ico';
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 
 const AgentManager = () => {
   const navigate = useNavigate();
@@ -208,8 +208,12 @@ if (response.ok) {
                         <td>{highlightText(agent.qualite, searchQuery)}</td>
                         <td>
                           <div className="action-buttons">
-                            <button className="edit" onClick={() => handleEdit(filteredAgents.indexOf(agent))}>✏</button>
-                            <button className="delete" onClick={() => handleDelete(filteredAgents.indexOf(agent))}>🗑</button>
+                            <button className="edit" onClick={() => handleEdit(filteredAgents.indexOf(agent))}>
+                              <FaEdit />
+                            </button>
+                            <button className="delete" onClick={() => handleDelete(filteredAgents.indexOf(agent))}>
+                              <FaTrash />
+                            </button>
                           </div>
                         </td>
                       </tr>

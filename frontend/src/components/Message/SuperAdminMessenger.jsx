@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { FaTimes, FaPaperPlane } from 'react-icons/fa';
+import { FaTimes, FaPaperPlane, FaComments } from 'react-icons/fa';
 import './SuperAdminMessenger.css';
 
 function MessengerSuperAdmin() {
@@ -86,7 +86,11 @@ function MessengerSuperAdmin() {
 
   return (
     <div className="messenger-container">
-      <h2>💬 Messagerie SuperAdmin</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <FaComments />
+        Messagerie SuperAdmin
+      </h2>
+
 
       {!chatOpen && (
         <div className="agent-select-section">

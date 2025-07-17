@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SignaturePad from 'react-signature-canvas';
-import { FaPaperPlane } from 'react-icons/fa'; // pour icône bouton envoyer
+import { FaPaperPlane, FaCalendarAlt, FaComments } from 'react-icons/fa'; // pour icône bouton envoyer
 import './AgentInterface.css';
 
 import ContratModifie from '../../dossiers/avenant/ContratModifie';
@@ -172,7 +172,10 @@ class AgentInterface extends Component {
         </p>
 
         <section className="evenements-section">
-          <h3>📅 Événements du jour</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaCalendarAlt />
+            Événements du jour
+          </h3>
           <ul className="event-list">
             {evenementsDuJour.map(event => (
               <li key={event.id} className="event-item">
@@ -224,7 +227,10 @@ class AgentInterface extends Component {
         )}
 
         <section className="messagerie">
-          <h3>💬 Messagerie</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaComments />
+            Messagerie
+          </h3>
           <div className="messages-section">
             {messages.length === 0 && (
               <p style={{ color: '#606770', textAlign: 'center' }}>Aucun message.</p>
