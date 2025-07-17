@@ -1,39 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { FaTimes, FaPaperPlane } from 'react-icons/fa';
 import './SuperAdminMessenger.css';
 
-function SuperAdminMessenger() {
+function MessengerSuperAdmin() {
   const [agents, setAgents] = useState([]);
-  const [selectedAgentId, setSelectedAgentId] = useState('');
+  // Charge agent sélectionné depuis localStorage (si existant)
+  const [selectedAgentId, setSelectedAgentId] = useState(() => localStorage.getItem('selectedAgentId') || '');
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [chatOpen, setChatOpen] = useState(!!localStorage.getItem('selectedAgentId'));
+  const messagesEndRef = useRef(null);
 
-  // ID réel du SuperAdmin connecté (à adapter dynamiquement plus tard)
+  // ID SuperAdmin connecté (depuis localStorage)
   const superAdminId = JSON.parse(localStorage.getItem('user'))?.id;
 
-  // Charger tous les agents disponibles
+  // Charger liste agents au chargement composant
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/agents/') // Endpoint pour récupérer les vrais agents
-      .then((res) => setAgents(res.data))
-      .catch((err) => console.error('Erreur lors du chargement des agents', err));
+      .get('http://localhost:8000/api/agents/')
+      .then(res => setAgents(res.data))
+      .catch(err => console.error('Erreur chargement agents:', err));
   }, []);
 
-  // Charger les messages avec l’agent sélectionné
+  // Charger messages dès que selectedAgentId change ET superAdminId dispo
   useEffect(() => {
-    if (!selectedAgentId || !superAdminId) return;
+    if (!selectedAgentId || !superAdminId) {
+      setMessages([]);
+      return;
+    }
 
     axios
       .get(`http://localhost:8000/api/conversation/${selectedAgentId}/SuperAdmin/`)
-      .then((res) => setMessages(res.data))
-      .catch((err) => {
-        console.error('Erreur lors du chargement des messages', err);
+      .then(res => setMessages(res.data))
+      .catch(err => {
+        console.error('Erreur chargement messages:', err);
         setMessages([]);
       });
   }, [selectedAgentId, superAdminId]);
 
+  // Scroll automatique vers bas à chaque changement messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Gestion sélection agent
+  const handleSelectChange = (e) => {
+    const agentId = e.target.value;
+    setSelectedAgentId(agentId);
+    localStorage.setItem('selectedAgentId', agentId);
+    setChatOpen(!!agentId);
+  };
+
   // Envoyer un message
-  const envoyerMessage = () => {
+  const sendMessage = () => {
     if (!newMessage.trim() || !selectedAgentId) return;
 
     const messageData = {
@@ -41,7 +61,7 @@ function SuperAdminMessenger() {
       expediteur_role: 'SuperAdmin',
       destinataire_id: selectedAgentId,
       destinataire_role: 'Agent',
-      contenu: newMessage,
+      contenu: newMessage.trim(),
       date_envoi: new Date().toISOString(),
     };
 
@@ -49,63 +69,103 @@ function SuperAdminMessenger() {
       .post('http://localhost:8000/api/messages/envoyer/', messageData)
       .then(() => {
         setNewMessage('');
-        // Recharger les messages après envoi
+        // Recharge messages directement après envoi
         return axios.get(`http://localhost:8000/api/conversation/${selectedAgentId}/SuperAdmin/`);
       })
-      .then((res) => setMessages(res.data))
-      .catch((err) => console.error('Erreur lors de l’envoi du message', err));
+      .then(res => setMessages(res.data))
+      .catch(err => console.error('Erreur envoi message:', err));
+  };
+
+  // Fermer la conversation
+  const closeChat = () => {
+    setSelectedAgentId('');
+    setMessages([]);
+    setChatOpen(false);
+    localStorage.removeItem('selectedAgentId');
   };
 
   return (
     <div className="messenger-container">
-      <h2>Messagerie SuperAdmin</h2>
+      <h2>💬 Messagerie SuperAdmin</h2>
 
-      {/* Liste déroulante des agents */}
-      <label>Choisir un agent :</label>
-      <select
-        value={selectedAgentId}
-        onChange={(e) => setSelectedAgentId(e.target.value)}
-      >
-        <option value="">-- Sélectionner un agent --</option>
-        {agents.map((agent) => (
-          <option key={agent.id} value={agent.id}>
-            {agent.nom} {agent.prenom}
-          </option>
-        ))}
-      </select>
+      {!chatOpen && (
+        <div className="agent-select-section">
+          <label htmlFor="agent-select">Choisir un agent :</label>
+          <select
+            id="agent-select"
+            value={selectedAgentId}
+            onChange={handleSelectChange}
+          >
+            <option value="">-- Sélectionner un agent --</option>
+            {agents.map(agent => (
+              <option key={agent.id} value={agent.id}>
+                {agent.nom} {agent.prenom}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
-      {/* Affichage des messages */}
-      <div className="messages-section">
-        {messages.length === 0 ? (
-          <p>Aucun message pour le moment.</p>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={
-                msg.expediteur_role === 'SuperAdmin'
-                  ? 'message superadmin-message'
-                  : 'message agent-message'
-              }
+      {chatOpen && (
+        <div className="chat-box">
+          <div className="chat-header">
+            <h3>
+              Conversation avec {agents.find(a => a.id === Number(selectedAgentId))?.nom || 'Agent'} {agents.find(a => a.id === Number(selectedAgentId))?.prenom || ''}
+            </h3>
+            <button className="close-btn" onClick={closeChat} title="Fermer">
+              <FaTimes size={20} />
+            </button>
+          </div>
+
+          <div className="messages-section">
+            {messages.length === 0 ? (
+              <p>Aucun message.</p>
+            ) : (
+              messages.map(msg => (
+                <div
+                  key={msg.id}
+                  className={
+                    msg.expediteur_role === 'SuperAdmin'
+                      ? 'message superadmin-message'
+                      : 'message agent-message'
+                  }
+                >
+                  <strong>{msg.expediteur_role} :</strong> {msg.contenu}
+                  <div className="message-date">
+                    {new Date(msg.date_envoi).toLocaleString()}
+                  </div>
+                </div>
+              ))
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="send-message-section">
+            <textarea
+              placeholder="Écrire un message..."
+              value={newMessage}
+              onChange={e => setNewMessage(e.target.value)}
+              onKeyDown={e => {
+                // Envoyer au Enter sauf shift+enter
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={!newMessage.trim() || !selectedAgentId}
+              title={!newMessage.trim() ? "Écris un message" : !selectedAgentId ? "Sélectionne un agent" : "Envoyer"}
             >
-              <strong>{msg.expediteur_role} :</strong> {msg.contenu}
-              <div className="message-date">{new Date(msg.date_envoi).toLocaleString()}</div>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Zone de saisie */}
-      <div className="send-message-section">
-        <textarea
-          placeholder="Écrire un message..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button onClick={envoyerMessage}>Envoyer</button>
-      </div>
+              <FaPaperPlane style={{ marginRight: '6px' }} />
+              Envoyer
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default SuperAdminMessenger;
+export default MessengerSuperAdmin;

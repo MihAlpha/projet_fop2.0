@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SignaturePad from 'react-signature-canvas';
+import { FaPaperPlane } from 'react-icons/fa'; // pour icône bouton envoyer
 import './AgentInterface.css';
 
 import ContratModifie from '../../dossiers/avenant/ContratModifie';
@@ -48,6 +49,7 @@ class AgentInterface extends Component {
       nouveauMessage: "",
     };
     this.signaturePadRef = React.createRef();
+    this.messagesEndRef = React.createRef();
   }
 
   componentDidMount() {
@@ -66,6 +68,12 @@ class AgentInterface extends Component {
       .then(res => res.json())
       .then(data => this.setState({ evenementsDuJour: data }))
       .catch(() => console.error("Erreur lors de la récupération des événements"));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.messages.length !== this.state.messages.length) {
+      this.messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   chargerMessages = (agentId, destinataireRole) => {
@@ -105,7 +113,7 @@ class AgentInterface extends Component {
   handleValiderSignature = () => {
     const signatureImage = this.signaturePadRef.current.getTrimmedCanvas().toDataURL('image/png');
     this.setState({ dossierSigne: true });
-    // Envoi vers le backend si besoin
+    // TODO: Envoyer signatureImage au backend si nécessaire
   };
 
   envoyerMessage = () => {
@@ -123,8 +131,9 @@ class AgentInterface extends Component {
         expediteur_id: agent.id,
         expediteur_role: "Agent",
         destinataire_id: null,
-        destinataire_role: destinataireRole,  
-        contenu: nouveauMessage,
+        destinataire_role: destinataireRole,
+        contenu: nouveauMessage.trim(),
+        date_envoi: new Date().toISOString(),
       }),
     })
       .then(res => {
@@ -156,74 +165,123 @@ class AgentInterface extends Component {
     const { agent, evenementsDuJour, typeSelectionne, dossierNom, messages, nouveauMessage } = this.state;
 
     return (
-      <div className="agent-container">
+      <div className="messenger-container">
         <h2>Bienvenue, {agent?.prenom} {agent?.nom}</h2>
-        <p><strong>Email :</strong> {agent?.email}</p>
-        <p><strong>Matricule :</strong> {agent?.im}</p>
+        <p style={{ textAlign: 'center', color: '#20807a', fontWeight: '600', marginBottom: '15px' }}>
+          Email : {agent?.email} — Matricule : {agent?.im}
+        </p>
 
-        <h3>📅 Événements du jour</h3>
-        <ul>
-          {evenementsDuJour.map((event) => (
-            <li key={event.id}>
-              <strong>{event.type_evenement}</strong>
-              <button onClick={() => this.afficherDossier(event)}>Voir les dossiers</button>
-
-              {typeSelectionne === event.type_evenement && (
-                <ul>
-                  {documentsParType[event.type_evenement]?.map((doc) => (
-                    <li key={doc}>
-                      <button onClick={() => this.handleChoisirDocument(doc)}>
-                        {doc}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+        <section className="evenements-section">
+          <h3>📅 Événements du jour</h3>
+          <ul className="event-list">
+            {evenementsDuJour.map(event => (
+              <li key={event.id} className="event-item">
+                <div className="event-title">
+                  <strong>{event.type_evenement}</strong>
+                  <button
+                    className="voir-dossier-btn"
+                    onClick={() => this.afficherDossier(event)}
+                  >
+                    Voir les dossiers
+                  </button>
+                </div>
+                {typeSelectionne === event.type_evenement && (
+                  <ul className="document-list">
+                    {documentsParType[event.type_evenement]?.map(doc => (
+                      <li key={doc}>
+                        <button
+                          className="document-btn"
+                          onClick={() => this.handleChoisirDocument(doc)}
+                        >
+                          {doc}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {dossierNom && (
-          <div className="dossier-container">
+          <section className="dossier-container">
             <div className="dossier-header">
-              <button onClick={this.handleFermer}>Fermer</button>
+              <button className="fermer-btn" onClick={this.handleFermer}>Fermer</button>
             </div>
             <div className="dossier-contenu">
               {this.renderDossier()}
               {!this.state.dossierSigne && (
-                <>
-                  <SignaturePad ref={this.signaturePadRef} canvasProps={{ width: 500, height: 200, className: 'signature-canvas' }} />
-                  <button onClick={this.handleValiderSignature}>Valider la signature</button>
-                </>
+                <div className="signature-zone">
+                  <SignaturePad
+                    ref={this.signaturePadRef}
+                    canvasProps={{ className: 'signature-canvas' }}
+                  />
+                  <button className="valider-btn" onClick={this.handleValiderSignature}>
+                    Valider la signature
+                  </button>
+                </div>
               )}
-              {this.state.dossierSigne && <p>✅ Dossier signé</p>}
+              {this.state.dossierSigne && (
+                <p className="signature-confirmation">✅ Dossier signé</p>
+              )}
             </div>
-          </div>
+          </section>
         )}
 
-        <div className="messagerie">
+        <section className="messagerie">
           <h3>💬 Messagerie</h3>
-          <div className="conversation">
-            <ul className="message-list">
-              {messages.map((msg) => (
-                <li key={msg.id} className={msg.expediteur?.id === agent?.id ? "agent-msg" : "admin-msg"}>
-                  <b>{msg.expediteur?.nom ? `${msg.expediteur.nom} ${msg.expediteur.prenom}` : msg.expediteur_role}</b>: {msg.contenu}
-                  <br />
-                  <small>{new Date(msg.date_envoi).toLocaleTimeString()}</small>
-                </li>
-              ))}
-            </ul>
+          <div className="messages-section">
+            {messages.length === 0 && (
+              <p style={{ color: '#606770', textAlign: 'center' }}>Aucun message.</p>
+            )}
+            {messages.map(msg => {
+              const isAgent = msg.expediteur?.id === agent?.id;
+              return (
+                <div
+                  key={msg.id}
+                  className={isAgent ? "superadmin-message message" : "agent-message message"}
+                >
+                  <div>
+                    <strong>
+                      {msg.expediteur?.nom
+                        ? `${msg.expediteur.nom} ${msg.expediteur.prenom}`
+                        : msg.expediteur_role}
+                      :
+                    </strong>{" "}
+                    {msg.contenu}
+                  </div>
+                  <div className="message-date">
+                    {new Date(msg.date_envoi).toLocaleTimeString()}
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={this.messagesEndRef} />
           </div>
 
-          <div className="message-form">
+          <div className="send-message-section">
             <textarea
               placeholder="Écrire un message..."
               value={nouveauMessage}
-              onChange={(e) => this.setState({ nouveauMessage: e.target.value })}
+              onChange={e => this.setState({ nouveauMessage: e.target.value })}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  this.envoyerMessage();
+                }
+              }}
             />
-            <button className="envoyer-btn" onClick={this.envoyerMessage}>Envoyer</button>
+            <button
+              onClick={this.envoyerMessage}
+              disabled={!nouveauMessage.trim()}
+              title={!nouveauMessage.trim() ? "Écris un message" : "Envoyer"}
+            >
+              <FaPaperPlane style={{ marginRight: 6 }} />
+              Envoyer
+            </button>
           </div>
-        </div>
+        </section>
       </div>
     );
   }

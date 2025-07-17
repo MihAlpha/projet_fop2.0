@@ -2,8 +2,6 @@
 .evenements-container {
   padding: 30px;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #b7dfd6, #1c9c96); /* Bleu-vert foncé dégradé */
-  color: #dee6e4;
   min-height: 100vh;
 }
 
@@ -40,7 +38,7 @@
 
 .close-button:hover {
   color: #692307 !important;
-  transform: scale(1.25);
+  transform: scale(1.1);
 }
 
 /* Date / heure */
