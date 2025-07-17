@@ -215,7 +215,7 @@ useEffect(() => {
             )}
              <li className="sidebar-link">
                 <a href="/superadmin-messages" className="link-wrapper">
-                  <span className="icon-wrapper">
+                  <span className="icon-wrapper-mess">
                     <FaEnvelope className="icon-1" />
                   </span>
                   <span className="link-text">Messagerie</span>
