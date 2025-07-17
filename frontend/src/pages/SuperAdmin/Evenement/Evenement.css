@@ -68,22 +68,16 @@ input[type="text"] {
   border: 1.8px solid #4d8b74;
   font-size: 16px;
   outline: none;
-  background-color: #1a7a76;
+  background-color: #8cc4c2;
   color: #1c9c96;
   font-weight: 600;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
+  box-shadow: inset 0 2px 5px rgba(22, 99, 94, 0.4);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="text"]::placeholder {
-  color: #9acabe;
 }
 
 input[type="text"]:focus {
   border-color: #8ee0c4;
-  box-shadow: 0 0 7px #7dd5bfaa;
-  background-color: hsl(178, 58%, 78%);
-  color: #e0f7f1;
+  box-shadow: 0 0 7px #2b5047aa;
 }
 
 /* Bloc Calendrier */
@@ -92,7 +86,7 @@ input[type="text"]:focus {
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 6px 16px rgba(20, 92, 68, 0.85);
-  color: #a0d8cb;
+  color: #020e0b;
 }
 
 /* Événements du jour à droite du calendrier */
@@ -141,7 +135,7 @@ input[type="text"]:focus {
 /* Bloc central – détails de l’événement */
 .evenements-center {
   flex: 2;
-  background: linear-gradient(135deg, #dfecec, #5c6b6a);
+  background: linear-gradient(135deg, #dfecec, #a3b8b6);
   padding: 25px 30px;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(20, 92, 68, 0.9);
