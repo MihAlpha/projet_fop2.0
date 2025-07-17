@@ -217,13 +217,7 @@ class AgentInterface extends Component {
                     ref={this.signaturePadRef}
                     canvasProps={{ className: 'signature-canvas' }}
                   />
-                  <button className="valider-btn" onClick={this.handleValiderSignature}>
-                    Valider la signature
-                  </button>
                 </div>
-              )}
-              {this.state.dossierSigne && (
-                <p className="signature-confirmation">✅ Dossier signé</p>
               )}
             </div>
           </section>

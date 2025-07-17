@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../img_tête.png';
 import SignaturePad from '../../components/Signature/SignaturePad';
+import { FaPenFancy } from 'react-icons/fa';
 
 const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
   const today = new Date().toLocaleDateString('fr-FR');
@@ -129,7 +130,10 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>✍️ Signer</button>
+            <button onClick={() => setShowSignature(true)}>
+              <FaPenFancy style={{ marginRight: '5px' }} />
+              Signer
+            </button>
           )
         )}
 

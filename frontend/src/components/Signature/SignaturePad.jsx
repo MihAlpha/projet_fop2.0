@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
+import { FaPen, FaCheck, FaTimes, FaSignature } from 'react-icons/fa';
 
 const SignaturePad = ({ onClose, onValidate }) => {
   const sigCanvas = useRef(null);
@@ -39,18 +40,30 @@ const SignaturePad = ({ onClose, onValidate }) => {
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-        <h3>Signez ici ✍️</h3>
-        <SignatureCanvas
-          ref={sigCanvas}
-          penColor="black"
-          canvasProps={{ width: 400, height: 200, className: 'sigCanvas' }}
-          backgroundColor="white"
-        />
-        <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
-          <button onClick={clear}>✏️ Effacer</button>
-          <button onClick={save}>✅ Valider</button>
-          <button onClick={onClose}>❌ Fermer</button>
-        </div>
+        <h3><FaSignature style={{ marginRight: '8px' }} /> Signez ici</h3>
+
+          <SignatureCanvas
+            ref={sigCanvas}
+            penColor="black"
+            canvasProps={{ width: 400, height: 200, className: 'sigCanvas' }}
+            backgroundColor="white"
+          />
+
+          <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
+            <button onClick={clear}>
+              <FaPen style={{ marginRight: '5px' }} />
+              Effacer
+            </button>
+            <button onClick={save}>
+              <FaCheck style={{ marginRight: '5px' }} />
+              Valider
+            </button>
+            <button onClick={onClose}>
+              <FaTimes style={{ marginRight: '5px' }} />
+              Fermer
+            </button>
+          </div>
+
       </div>
     </div>
   );
