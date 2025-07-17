@@ -19,9 +19,8 @@ import SuperAdminMessenger from './components/Message/SuperAdminMessenger';
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-      <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
+      <Routes>     
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/enter-code" element={<EnterResetCode />} />
