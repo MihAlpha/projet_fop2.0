@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaCalendarAlt, FaClock, FaSearch, FaFolderOpen, FaMapPin, FaMapMarker, FaFileAlt, FaUser, FaIdBadge, FaTimesCircle, FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Dossier from "./Dossier";
@@ -163,10 +163,22 @@ const Evenements = () => {
 
       <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "20px" }}>
         <div className="date-container" onClick={() => setShowCalendar(!showCalendar)} tabIndex={0} role="button" aria-label="Afficher calendrier">
-          <div className="date-time-block">🕒 {formattedDate} - {formattedTime}</div>
+          <div className="date-time-block">
+            <span style={{ marginRight: "8px", color: "#555" }}>
+              <FaCalendarAlt style={{ marginRight: "5px" }} />
+              {formattedDate}
+            </span>
+            <span style={{ marginLeft: "10px", color: "#555" }}>
+              <FaClock style={{ marginRight: "5px" }} />
+              {formattedTime}
+            </span>
+          </div>
         </div>
         <div>
-          <label htmlFor="filterIM">🔎 Filtrer par IM : </label>
+          <label htmlFor="filterIM" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <FaSearch />
+            Filtrer par IM :
+          </label>
           <input
             id="filterIM"
             type="text"
@@ -184,10 +196,10 @@ const Evenements = () => {
             <Calendar onChange={setSelectedDate} value={selectedDate} />
           </div>
           <div className="events-today-popup" aria-live="polite">
-            <h4>📅 Événements de cette date :</h4>
+            <h4><FaCalendarAlt style={{ marginRight: '8px', color: '#f4fcfaff' }} /> Événements de cette date :</h4>
             {evenementsDuJour.length > 0 ? (
               evenementsDuJour.map((e, i) => (
-                <div
+               <div
                   key={i}
                   className="event-line"
                   onClick={() => handleEventClick(e)}
@@ -195,8 +207,10 @@ const Evenements = () => {
                   role="button"
                   aria-label={`Événement ${e.type_evenement} de ${e.agent.nom}`}
                   onKeyDown={(ev) => { if (ev.key === "Enter") handleEventClick(e); }}
+                  style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}
                 >
-                  🔎 {e.agent.nom} — {e.type_evenement}
+                  <FaSearch />
+                  {e.agent.nom} — {e.type_evenement}
                 </div>
               ))
             ) : (
@@ -208,28 +222,50 @@ const Evenements = () => {
 
       <div style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
         <div className="evenements-center">
-          <h3>📂 Détails de l’événement sélectionné</h3>
+          <h3 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <FaFolderOpen />
+            Détails de l’événement sélectionné
+          </h3>
 
           {filterIM && (
             imExiste ? (
               <div>
-                <p><strong>👤 Nom :</strong> {agentNom}</p>
-                <p><strong>🆔 IM :</strong> {agentIM}</p>
+                <p><strong><FaUser style={{ marginRight: '6px', color: '#083027' }} /> Nom :</strong> {agentNom}</p>
+                <p>
+                  <strong>
+                    <FaIdBadge style={{ marginRight: '6px', color: '#083027' }} />
+                    IM :
+                  </strong> {agentIM}
+                </p>
                 {filteredEventsByIM.length > 0 ? (
                   <>
-                    <p><strong>🗂️ Événements :</strong></p>
+                    <p>
+                      <strong>
+                        <FaFolderOpen style={{ marginRight: '6px', color: '#083027' }} />
+                        Événements :
+                      </strong>
+                    </p>
                     <ul>
                       {filteredEventsByIM.map((e, i) => (
-                        <li key={i}>📌 {e.date} — {e.type_evenement}</li>
+                        <li key={i} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <FaMapPin />
+                          {e.date} — {e.type_evenement}
+                        </li>
                       ))}
                     </ul>
                   </>
                 ) : (
-                  <p style={{ color: "orange" }}>⚠️ Aucun événement trouvé pour cet agent.</p>
+                  <p style={{ color: "orange", display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <FaExclamationTriangle />
+                    Aucun événement trouvé pour cet agent.
+                  </p>
                 )}
               </div>
             ) : (
-              <p style={{ color: "red" }}>❌ IM introuvable dans la base.</p>
+             <p style={{ color: "red", display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <FaTimesCircle />
+                IM introuvable dans la base.
+              </p>
             )
           )}
 
@@ -240,17 +276,18 @@ const Evenements = () => {
               <p><strong>Date :</strong> {selectedEvenement.date}</p>
               <p><strong>IM :</strong> {selectedEvenement.agent.im}</p>
 
-              {new Date(selectedEvenement.date) <= new Date() && (
+              {selectedEvenement.date <= new Date().toLocaleDateString("fr-CA") && (
                 <>
                   <p><strong>Documents requis :</strong></p>
                   <ul>
                     {documentsParType[selectedEvenement.type_evenement]?.map((doc, i) => (
                       <li
                         key={i}
-                        style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
+                        style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
                         onClick={() => handleOpenDossier(doc)}
                       >
-                        📄 {doc}
+                        <FaFileAlt />
+                        {doc}
                       </li>
                     ))}
                   </ul>
@@ -272,8 +309,16 @@ const Evenements = () => {
 
           return (
             <div key={index} className="event-section">
-              <h4 style={{ cursor: "pointer" }} onClick={() => toggleType(type)} tabIndex={0} role="button" aria-expanded={expandedType === type} aria-controls={`events-list-${type}`}>
-                📌 {type} ({eventsOfTypeToday.length})
+              <h4
+                style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
+                onClick={() => toggleType(type)}
+                tabIndex={0}
+                role="button"
+                aria-expanded={expandedType === type}
+                aria-controls={`events-list-${type}`}
+              >
+                <FaMapMarker />
+                {type} ({eventsOfTypeToday.length})
               </h4>
               {expandedType === type && (
                 <div id={`events-list-${type}`}>
@@ -285,8 +330,10 @@ const Evenements = () => {
                       tabIndex={0}
                       role="button"
                       aria-label={`Événement de ${e.agent.nom}`}
+                      style={{ display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}
                     >
-                      🔍 {e.agent.nom} {e.agent.prenom}
+                      <FaSearch />
+                      {e.agent.nom} {e.agent.prenom}
                     </p>
                   ))}
                 </div>

@@ -70,8 +70,12 @@ class AgentInterface extends Component {
 
   chargerMessages = (agentId, destinataireRole) => {
     if (!agentId || !destinataireRole) return;
-    fetch(`http://localhost:8000/api/messages/?expediteur_id=${agentId}&destinataire=${destinataireRole}`)
-      .then(res => res.json())
+
+    fetch(`http://localhost:8000/api/conversation/${agentId}/${destinataireRole}/`)
+      .then(res => {
+        if (!res.ok) throw new Error("Erreur HTTP " + res.status);
+        return res.json();
+      })
       .then(data => this.setState({ messages: data }))
       .catch(err => console.error("⚠️ Erreur chargement messages", err));
   };

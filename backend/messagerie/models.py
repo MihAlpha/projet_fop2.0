@@ -2,7 +2,7 @@ from django.db import models
 from agents.models import Agent
 
 class Message(models.Model):
-    # Agent qui envoie
+    
     expediteur = models.ForeignKey(
         Agent, on_delete=models.CASCADE, null=True, blank=True,
         related_name='messages_envoyes'
