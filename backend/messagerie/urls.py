@@ -3,7 +3,7 @@ from .views import (
     ConversationListView,
     ConversationDetailView,
     envoyer_message,
-    liste_messages,
+    liste_messages
 )
 
 urlpatterns = [

@@ -7,21 +7,27 @@ function Message() {
   const [destinataireId, setDestinataireId] = useState('');
   const [nouveauMessage, setNouveauMessage] = useState('');
 
-  // Charger les messages où SuperAdmin est le destinataire
-  useEffect(() => {
-    fetch(`http://localhost:8000/api/messages/?destinataire=SuperAdmin`)
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) setMessages(data);
-        else console.error("Réponse inattendue:", data);
-      })
-      .catch(console.error);
 
+  const superadminId = 1; 
+ 
+  useEffect(() => {
     fetch(`http://localhost:8000/api/agents/`)
       .then(res => res.json())
       .then(setAgents)
       .catch(console.error);
   }, []);
+
+ 
+  useEffect(() => {
+    if (!destinataireId) return;
+    fetch(`http://localhost:8000/api/conversation/${superadminId}/Agent/`)
+      .then(res => {
+        if (!res.ok) throw new Error("Erreur HTTP " + res.status);
+        return res.json();
+      })
+      .then(setMessages)
+      .catch(console.error);
+  }, [destinataireId]);
 
   const envoyerMessage = () => {
     if (!nouveauMessage.trim() || !destinataireId) {
@@ -33,6 +39,7 @@ function Message() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        expediteur_id: superadminId,
         expediteur_role: "SuperAdmin",
         destinataire_role: "Agent",
         destinataire_id: parseInt(destinataireId),
