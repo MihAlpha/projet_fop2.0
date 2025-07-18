@@ -127,7 +127,6 @@ const LettreAffectation = ({ agent }) => {
         float: 'right'
       }}>
         <p>Antananarivo, le {today}</p>
-        <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
 
         {signature ? (
           <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
