@@ -11,7 +11,7 @@ const DemandeAvancement = ({ agent }) => {
   const type_evenement = "Avancement";
   const nom_dossier = "Demande d’avancement";
 
-  const role = localStorage.getItem("role"); // ✅ Récupère le rôle depuis localStorage
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchSignature = async () => {
@@ -30,9 +30,7 @@ const DemandeAvancement = ({ agent }) => {
       }
     };
 
-    if (agent && agent.id) {
-      fetchSignature();
-    }
+    if (agent?.id) fetchSignature();
   }, [agent]);
 
   const envoyerSignature = async (signatureImage) => {
@@ -65,27 +63,26 @@ const DemandeAvancement = ({ agent }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
+      height: 'auto',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize: '11px',
+      lineHeight: '1.4',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      lineHeight: '1.8em',
       position: 'relative'
     }}>
       {/* En-tête */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{
-            width: '100%',
-            height: 'auto',
-            objectFit: 'contain'
-          }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
@@ -93,21 +90,22 @@ const DemandeAvancement = ({ agent }) => {
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Demande d’avancement
       </h2>
 
-      {/* Texte */}
+      {/* Texte principal */}
       <p>
         Je soussigné(e), <strong>{agent.nom} {agent.prenom}</strong>, immatriculé(e) sous le numéro <strong>{agent.im}</strong>,
         sollicite respectueusement un avancement de grade ou d’échelon conformément aux dispositions réglementaires régissant la carrière des agents publics.
       </p>
 
       <p>
-        Ma demande s’appuie sur l’ancienneté acquise, les performances professionnelles constatées, ainsi que les évaluations annuelles favorables
-        établies par ma hiérarchie.
+        Ma demande s’appuie sur l’ancienneté acquise, les performances professionnelles constatées,
+        ainsi que les évaluations annuelles favorables établies par ma hiérarchie.
       </p>
 
       <p>
@@ -120,29 +118,38 @@ const DemandeAvancement = ({ agent }) => {
 
       {/* Signature */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '60px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
-        <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
+        <p style={{ fontSize: '12px', marginTop: '20px' }}>Antananarivo, le {today}</p>
 
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img src={signature} alt="signature" style={{ width: '160px', height: '60px', objectFit: 'contain' }} />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                backgroundColor: '#6C3483',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
-                Signer
+              Signer
             </button>
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
+        <p style={{ marginTop: '10px', fontSize: '11px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Modale de signature */}
+      {/* Signature Pad */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}
