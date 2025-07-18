@@ -10,8 +10,7 @@ const LettreAffectation = ({ agent }) => {
 
   const type_evenement = "Avenant";
   const nom_dossier = "Lettre d'affectation";
-
-  const role = localStorage.getItem('role'); // Récupérer le rôle depuis localStorage
+  const role = localStorage.getItem('role');
 
   useEffect(() => {
     const fetchSignature = async () => {
@@ -30,9 +29,7 @@ const LettreAffectation = ({ agent }) => {
       }
     };
 
-    if (agent && agent.id) {
-      fetchSignature();
-    }
+    if (agent?.id) fetchSignature();
   }, [agent]);
 
   const envoyerSignature = async (signatureImage) => {
@@ -65,23 +62,25 @@ const LettreAffectation = ({ agent }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize: '11px',
+      lineHeight: '1.4',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      lineHeight: '1.8em',
       position: 'relative'
     }}>
       {/* En-tête */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
@@ -89,13 +88,14 @@ const LettreAffectation = ({ agent }) => {
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Lettre d’affectation
       </h2>
 
-      {/* Corps de la lettre */}
+      {/* Corps */}
       <p>
         Je soussigné(e), <strong>{agent.nom} {agent.prenom}</strong>, agent administratif immatriculé sous le numéro <strong>{agent.im}</strong>,
         reconnais avoir pris connaissance de mon affectation au poste qui m’est attribué au sein de l’administration publique.
@@ -119,31 +119,41 @@ const LettreAffectation = ({ agent }) => {
         Fait pour servir et valoir ce que de droit.
       </p>
 
-      {/* Bloc Signature */}
+      {/* Signature */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '60px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
+        <p style={{ fontSize: '12px', marginTop: '20px' }}>Antananarivo, le {today}</p>
+        <p style={{ marginTop: '50px', fontSize: '12px' }}><strong>Signature de l’agent</strong></p>
 
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img src={signature} alt="signature" style={{ width: '160px', height: '60px', objectFit: 'contain' }} />
         ) : (
           role === 'agent' && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                backgroundColor: '#6C3483',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
               Signer
             </button>
-
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
+        <p style={{ marginTop: '10px', fontSize: '11px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Modale Signature */}
+      {/* Modale de signature */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}
