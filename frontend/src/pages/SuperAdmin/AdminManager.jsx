@@ -175,11 +175,13 @@ const AdminManager = () => {
               <td>{admin.email}</td>
               <td>{admin.is_active ? "Actif" : "Inactif"}</td>
               <td>
+                <div className="button-group">
                 <button className="admin-btn toggle-btn" onClick={() => handleToggleActive(admin.id, admin.is_active)}>
                   {admin.is_active ? "Désactiver" : "Activer"}
                 </button>
                 <button className="admin-btn edit-btn" onClick={() => handleEdit(admin)}>Modifier</button>
                 <button className="admin-btn delete-btn" onClick={() => handleDelete(admin.id)}>Supprimer</button>
+                </div>
               </td>
             </tr>
           ))}

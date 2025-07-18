@@ -1,13 +1,13 @@
 .admin-container {
   padding: 40px 30px;
   font-family: "Segoe UI", sans-serif;
-  background-color: #f0fdfa;
+  background-color: #f4e4ff; /* un violet très clair */
   min-height: 100vh;
 }
 
 .admin-container h2 {
   text-align: center;
-  color: #2c3e50;
+  color: #6C3483; /* violet foncé */
   margin-bottom: 30px;
 }
 
@@ -27,7 +27,7 @@
   border: none;
   font-size: 22px;
   cursor: pointer;
-  color: #2c3e50;
+  color: #6E3B1E; /* marron foncé */
   padding-right: 30px;
 }
 
@@ -46,23 +46,26 @@
   position: absolute;
   top: -5px;
   right: -5px;
-  background: red;
+  background: #E67E22; /* orange vif */
   color: white;
   border-radius: 50%;
   padding: 2px 6px;
   font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(230, 126, 34, 0.7);
 }
 
 .notif-dropdown {
   position: absolute;
   top: 50px;
   right: 0;
-  background: #fff;
+  background: #FFFFFF; /* blanc pur */
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   width: 300px;
   z-index: 1000;
+  box-shadow: 0 4px 12px rgba(108, 52, 131, 0.15);
 }
 
 .notif-dropdown ul {
@@ -73,13 +76,19 @@
 
 .notif-dropdown li {
   margin-bottom: 10px;
+  color: #2c2c2c;
+  transition: background-color 0.3s ease;
+}
+
+.notif-dropdown li:hover {
+  background-color: #f7e9ff; /* violet très clair au hover */
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 10px rgba(108, 52, 131, 0.1);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -92,13 +101,13 @@
 }
 
 .admin-table thead {
-  background-color: #26a69a;
+  background-color: #6C3483; /* violet foncé */
   color: white;
   font-weight: 600;
 }
 
 .admin-table tbody tr:hover {
-  background-color: #e0f7fa;
+  background-color: #f0e6ff; /* violet très clair */
 }
 
 .admin-btn {
@@ -106,45 +115,46 @@
   border-radius: 6px;
   padding: 8px 14px;
   margin: 5px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
   font-size: 14px;
   width: 100px;
   box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(108, 52, 131, 0.15);
 }
 
 .edit-btn {
-  background-color: #f7c948;
-  color: #1a1a1a;
+  background-color: #E67E22; /* orange vif */
+  color: #ffffff;
 }
 
 .edit-btn:hover {
-  background-color: #e0b43d;
+  background-color: #c75c0e;
 }
 
 .delete-btn {
-  background-color: #e74c3c;
+  background-color: #b03a2e; /* rouge bordeaux */
   color: #ffffff;
 }
 
 .delete-btn:hover {
-  background-color: #c0392b;
+  background-color: #7d2519;
 }
 
 .toggle-btn {
-  background-color: #26a69a;
+  background-color: #6C3483; /* violet foncé */
   color: white;
 }
 
 .toggle-btn:hover {
-  background-color: #1e8a7e;
+  background-color: #572e6f;
 }
 
 .admin-modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(108, 52, 131, 0.4); /* violet transparent */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -156,28 +166,34 @@
   padding: 24px 30px;
   border-radius: 10px;
   width: 350px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(108, 52, 131, 0.15);
 }
 
 .admin-modal-content h3 {
   margin-top: 0;
-  color: #2c3e50;
+  color: #6C3483;
 }
 
 .admin-modal-content label {
   display: block;
   margin-top: 16px;
   font-weight: 600;
-  color: #34495e;
+  color: #6E3B1E; /* marron foncé */
 }
 
 .admin-modal-content input {
   width: 100%;
   padding: 8px 10px;
   margin-top: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #6E3B1E; /* marron */
   border-radius: 6px;
   font-size: 14px;
+}
+
+.admin-modal-content input:focus {
+  border-color: #6C3483;
+  box-shadow: 0 0 6px #6C3483;
+  outline: none;
 }
 
 .admin-modal-content button {
@@ -187,16 +203,168 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
+  box-shadow: 0 2px 6px rgba(108, 52, 131, 0.15);
+  transition: background-color 0.3s ease;
 }
 
 .admin-modal-content button:first-of-type {
-  background-color: #26a69a;
+  background-color: #6C3483;
   color: white;
 }
 
+.admin-modal-content button:first-of-type:hover {
+  background-color: #572e6f;
+}
+
 .admin-modal-content button:last-of-type {
-  background-color: #bdc3c7;
-  color: #2c3e50;
+  background-color: #d7d2dc;
+  color: #6E3B1E;
+}
+
+.admin-modal-content button:last-of-type:hover {
+  background-color: #b3a8bd;
+}
+/* Responsive - Tablettes et petits écrans */
+@media (max-width: 1024px) {
+  .admin-container {
+    padding: 30px 20px;
+  }
+
+  .header-buttons {
+    top: 8px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .close-button {
+    font-size: 20px;
+    padding-right: 20px;
+  }
+
+  .notif-icon img {
+    height: 38px;
+    width: 38px;
+  }
+
+  .notif-dropdown {
+    width: 260px;
+    padding: 8px;
+  }
+
+  .admin-modal-content {
+    width: 320px;
+    padding: 20px 25px;
+  }
+
+  .admin-modal-content button {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+
+  .admin-btn {
+    font-size: 13px;
+    padding: 7px 12px;
+    width: 90px;
+    margin: 4px;
+  }
+}
+
+/* Responsive - Mobiles */
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 20px 10px;
+  }
+
+  .header-buttons {
+    top: 6px;
+    right: 8px;
+    gap: 6px;
+  }
+
+  .close-button {
+    font-size: 18px;
+    padding-right: 15px;
+  }
+
+  .notif-icon img {
+    height: 32px;
+    width: 32px;
+  }
+
+  .notif-dropdown {
+    width: 220px;
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+
+  .admin-table thead {
+    font-size: 13px;
+  }
+
+  .admin-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+    width: 80px;
+    margin: 3px;
+  }
+
+  .admin-modal-content {
+    width: 90vw; /* largeur presque plein écran */
+    padding: 15px 20px;
+  }
+
+  .admin-modal-content h3 {
+    font-size: 18px;
+  }
+
+  .admin-modal-content label {
+    font-size: 14px;
+  }
+
+  .admin-modal-content input {
+    font-size: 13px;
+    padding: 7px 8px;
+  }
+
+  .admin-modal-content button {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+  
+  /* Rendre la table scrollable horizontalement sur petits écrans */
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    white-space: nowrap;
+  }
+}
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: nowrap; 
+}
+@media (max-width: 900px) {
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-start;
+  }
+
+  .admin-btn {
+    width: auto; 
+  }
 }
