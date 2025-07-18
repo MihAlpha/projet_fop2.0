@@ -10,9 +10,8 @@ const CertificatCessation = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Retraite";
   const nom_dossier = "Certificat de cessation de fonctions";
-  const role = localStorage.getItem("role"); // ✅ Récupération du rôle
+  const role = localStorage.getItem("role");
 
-  // ✅ Charger la signature existante depuis l’API
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -24,22 +23,16 @@ const CertificatCessation = ({ agent, onSignatureValidee }) => {
             ? data.signature_image
             : `data:image/png;base64,${data.signature_image}`;
           setSignature(imageData);
-
-          if (onSignatureValidee) {
-            onSignatureValidee(); // ✅ Notifier le parent
-          }
+          if (onSignatureValidee) onSignatureValidee();
         }
       } catch (error) {
         console.error("Erreur de chargement de la signature :", error);
       }
     };
 
-    if (agent?.id) {
-      fetchSignature();
-    }
+    if (agent?.id) fetchSignature();
   }, [agent]);
 
-  // ✅ Enregistrer la signature
   const enregistrerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -59,9 +52,7 @@ const CertificatCessation = ({ agent, onSignatureValidee }) => {
 
       if (response.ok) {
         alert("✅ Signature enregistrée avec succès !");
-        if (onSignatureValidee) {
-          onSignatureValidee();
-        }
+        if (onSignatureValidee) onSignatureValidee();
       } else {
         alert("❌ Erreur : " + result.message);
       }
@@ -73,43 +64,46 @@ const CertificatCessation = ({ agent, onSignatureValidee }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize: '11px',
+      lineHeight: '1.4',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      lineHeight: '1.8em',
       position: 'relative'
     }}>
-      {/* Logo en-tête */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      {/* Logo */}
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
-      {/* Titre centré, souligné */}
+      {/* Titre */}
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Certificat de cessation de fonctions
       </h2>
 
-      {/* Corps du texte */}
+      {/* Contenu du texte */}
       <p>
         Nous certifions que <strong>{agent.nom} {agent.prenom}</strong>, agent administratif immatriculé sous le numéro <strong>{agent.im}</strong>,
         a mis fin à ses fonctions au sein de l’administration publique à compter du <strong>{today}</strong>.
       </p>
 
-      <p>
+      <p style={{ marginTop: '20px' }}>
         Tout au long de sa carrière, l'intéressé(e) a fait preuve de rigueur, de loyauté et d’un engagement constant envers le service public.
         Cette cessation est conforme aux dispositions du Statut Général de la Fonction Publique.
       </p>
@@ -120,30 +114,39 @@ const CertificatCessation = ({ agent, onSignatureValidee }) => {
 
       {/* Signature autorité */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '60px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
-        <p style={{ marginTop: '60px' }}><strong>Signature de l’autorité compétente</strong></p>
+        <p style={{ fontSize: '12px', marginTop: '20px' }}>Antananarivo, le {today}</p>
+        <p style={{ marginTop: '50px', fontSize: '12px' }}><strong>Signature de l’autorité compétente</strong></p>
 
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img src={signature} alt="signature" style={{ width: '160px', height: '60px', objectFit: 'contain' }} />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                backgroundColor: '#6C3483',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
               Signer
             </button>
-
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>Le Responsable Administratif</p>
+        <p style={{ marginTop: '10px', fontSize: '11px' }}>Le Responsable Administratif</p>
       </div>
 
-      {/* Composant SignaturePad */}
+      {/* SignaturePad */}
       {showSignature && (
         <SignaturePad
           nomPrenom="Le Responsable Administratif"

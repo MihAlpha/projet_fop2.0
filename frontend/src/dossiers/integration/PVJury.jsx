@@ -10,10 +10,8 @@ const PVJury = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Intégration";
   const nom_dossier = "Procès verbal de jury";
+  const role = localStorage.getItem("role");
 
-  const role = localStorage.getItem("role"); // ✅ Récupération du rôle
-
-  // ✅ Charger la signature depuis l’API
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -33,12 +31,9 @@ const PVJury = ({ agent, onSignatureValidee }) => {
       }
     };
 
-    if (agent && agent.id) {
-      fetchSignature();
-    }
+    if (agent?.id) fetchSignature();
   }, [agent]);
 
-  // ✅ Enregistrer la signature vers l’API
   const envoyerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -70,23 +65,25 @@ const PVJury = ({ agent, onSignatureValidee }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize: '11px',
+      lineHeight: '1.4',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      position: 'relative',
-      lineHeight: '1.8em'
+      position: 'relative'
     }}>
-      {/* Logo en haut */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      {/* Logo */}
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
@@ -94,13 +91,14 @@ const PVJury = ({ agent, onSignatureValidee }) => {
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Procès-verbal de jury
       </h2>
 
-      {/* Corps du texte */}
+      {/* Contenu */}
       <p>
         Le jury de sélection, réuni conformément aux textes régissant la Fonction Publique, atteste que :
       </p>
@@ -122,31 +120,41 @@ const PVJury = ({ agent, onSignatureValidee }) => {
         Le présent procès-verbal est établi pour servir et valoir ce que de droit.
       </p>
 
-      {/* Signature agent */}
+      {/* Signature */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '60px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
+        <p style={{ fontSize: '12px', marginTop: '20px' }}>Antananarivo, le {today}</p>
+        <p style={{ marginTop: '50px', fontSize: '12px' }}><strong>Signature de l’agent</strong></p>
 
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img src={signature} alt="signature" style={{ width: '160px', height: '60px', objectFit: 'contain' }} />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                backgroundColor: '#6C3483',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
               Signer
             </button>
-
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
+        <p style={{ marginTop: '10px', fontSize: '11px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Boîte modale pour SignaturePad */}
+      {/* SignaturePad Modal */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}

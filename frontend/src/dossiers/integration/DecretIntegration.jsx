@@ -10,10 +10,8 @@ const DecretIntegration = ({ agent }) => {
 
   const type_evenement = "Intégration";
   const nom_dossier = "Décret d’intégration";
+  const role = localStorage.getItem("role");
 
-  const role = localStorage.getItem("role"); // ✅ Récupère le rôle depuis localStorage
-
-  // ✅ Charger la signature depuis le backend
   useEffect(() => {
     const fetchSignature = async () => {
       try {
@@ -31,12 +29,9 @@ const DecretIntegration = ({ agent }) => {
       }
     };
 
-    if (agent && agent.id) {
-      fetchSignature();
-    }
+    if (agent?.id) fetchSignature();
   }, [agent]);
 
-  // ✅ Enregistrer la signature dans le backend
   const envoyerSignature = async (signatureImage) => {
     try {
       const data = {
@@ -67,23 +62,25 @@ const DecretIntegration = ({ agent }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize: '11px',
+      lineHeight: '1.4',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      position: 'relative',
-      lineHeight: '1.8em'
+      position: 'relative'
     }}>
-      {/* Logo */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      {/* En-tête */}
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
@@ -91,13 +88,14 @@ const DecretIntegration = ({ agent }) => {
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Décret d’intégration
       </h2>
 
-      {/* Contenu */}
+      {/* Corps */}
       <p>
         Je soussigné(e), <strong>{agent.nom} {agent.prenom}</strong>, immatriculé(e) sous le numéro <strong>{agent.im}</strong>,
         atteste avoir reçu le présent décret portant intégration dans la Fonction Publique.
@@ -119,29 +117,39 @@ const DecretIntegration = ({ agent }) => {
 
       {/* Signature */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '60px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
+        <p style={{ fontSize: '12px', marginTop: '20px' }}>Antananarivo, le {today}</p>
+        <p style={{ marginTop: '50px', fontSize: '12px' }}><strong>Signature de l’agent</strong></p>
 
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img src={signature} alt="signature" style={{ width: '160px', height: '60px', objectFit: 'contain' }} />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                backgroundColor: '#6C3483',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
               Signer
             </button>
-
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
+        <p style={{ marginTop: '10px', fontSize: '11px' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
-      {/* Modale SignaturePad */}
+      {/* Modale Signature */}
       {showSignature && (
         <SignaturePad
           nomPrenom={`${agent.nom} ${agent.prenom}`}
