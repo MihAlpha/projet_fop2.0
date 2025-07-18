@@ -10,8 +10,7 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
 
   const type_evenement = "Avancement";
   const nom_dossier = "Attestation de performance";
-
-  const role = localStorage.getItem("role"); // 👈 Récupère le rôle ici
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchSignature = async () => {
@@ -67,23 +66,26 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
 
   return (
     <div style={{
-      width: '794px',
+      width: '500px',
+      height: '550px',
       margin: '0 auto',
-      paddingRight: '63px',
-      paddingBottom: '100px',
+      padding: '10px 30px',
+      backgroundColor: '#fff',
+      color: '#111',
       fontFamily: 'Georgia, serif',
-      backgroundColor: 'white',
-      color: 'black',
+      fontSize:'11px',
+      lineHeight: '1.2',
+      boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
       boxSizing: 'border-box',
-      lineHeight: '1.8em',
       position: 'relative'
     }}>
       {/* En-tête */}
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <img
           src={logo}
           alt="Logo Ministère"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          style={{ width: '100%', height: '80px', objectFit: 'contain' }}
         />
       </div>
 
@@ -91,8 +93,9 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
       <h2 style={{
         textAlign: 'center',
         textDecoration: 'underline',
-        marginBottom: '30px',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
+        fontSize: '15px',
+        marginBottom: '20px'
       }}>
         Attestation de performance
       </h2>
@@ -112,32 +115,47 @@ const AttestationDePerformance = ({ agent, onSignatureValidee }) => {
         Cette attestation est rédigée en vue d’appuyer une demande d’avancement dans le cadre des dispositions en vigueur relatives à la carrière des agents de l’État.
       </p>
 
-      <p>
-        Fait pour servir et valoir ce que de droit.
-      </p>
+      <p>Fait pour servir et valoir ce que de droit.</p>
 
-      {/* Bloc Signature */}
+      {/* Signature */}
       <div style={{
-        marginTop: '180px',
-        textAlign: 'right',
-        width: '250px',
-        float: 'right'
+        marginTop: '120px',
+        textAlign: 'right'
       }}>
-        <p>Antananarivo, le {today}</p>
-        <p style={{ marginTop: '60px' }}><strong>Signature de l’agent</strong></p>
-
+        <p style={{ fontSize: '12px', marginTop: '10px !important' }}>Antananarivo, le {today}</p>
         {signature ? (
-          <img src={signature} alt="signature" style={{ width: '100%', height: '80px', objectFit: 'contain' }} />
+          <img
+            src={signature}
+            alt="signature"
+            style={{
+              marginTop: '8px',
+              width: '180px',
+              height: '60px',
+              objectFit: 'contain'
+            }}
+          />
         ) : (
           role === "agent" && (
-            <button onClick={() => setShowSignature(true)}>
+            <button
+              onClick={() => setShowSignature(true)}
+              style={{
+                marginTop: '10px',
+                padding: '6px 12px',
+                fontSize: '14px',
+                backgroundColor: '#7f5af0',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer'
+              }}
+            >
               <FaPenFancy style={{ marginRight: '5px' }} />
               Signer
             </button>
           )
         )}
 
-        <p style={{ marginTop: '10px' }}>{agent.nom} {agent.prenom}</p>
+        <p style={{ marginTop: '10px', fontWeight: '500' }}>{agent.nom} {agent.prenom}</p>
       </div>
 
       {/* Modale Signature */}
