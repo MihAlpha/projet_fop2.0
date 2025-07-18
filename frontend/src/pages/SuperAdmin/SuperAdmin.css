@@ -259,6 +259,7 @@ h2 {
 
 .dropdown-menu button {
   display: flex;
+  margin-top: 6px;
   align-items: center;
   background: none;
   border: none;
@@ -272,7 +273,7 @@ h2 {
 }
 
 .dropdown-menu button:hover {
-  background-color: #f5e4ff;
+  background-color: #f5e4ff !important;
   border-radius: 6px;
 }
 
