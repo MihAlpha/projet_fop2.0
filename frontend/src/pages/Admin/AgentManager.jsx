@@ -37,12 +37,12 @@ const AgentManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!/^\d{12}$/.test(formData.cin)) {
+    if (!/^[0-9]{12}$/.test(formData.cin)) {
       alert('Le numéro du CIN doit contenir exactement 12 chiffres!');
       return;
     }
 
-    if (!/^\d{6}$/.test(formData.im)) {
+    if (!/^[0-9]{6}$/.test(formData.im)) {
       alert('Le numéro d’IM doit contenir exactement 6 chiffres!');
       return;
     }
@@ -68,16 +68,16 @@ const AgentManager = () => {
         body: JSON.stringify(formData),
       });
 
-if (response.ok) {
-  fetchAgents();
-  setFormData(initialFormState);
-  setEditIndex(null);
-  setShowForm(false);
-} else {
-  const errorData = await response.json();
-  const errorMessages = Object.values(errorData).flat().join('\n');
-  alert(errorMessages || 'Erreur lors de l’enregistrement');
-}
+      if (response.ok) {
+        fetchAgents();
+        setFormData(initialFormState);
+        setEditIndex(null);
+        setShowForm(false);
+      } else {
+        const errorData = await response.json();
+        const errorMessages = Object.values(errorData).flat().join('\n');
+        alert(errorMessages || 'Erreur lors de l’enregistrement');
+      }
 
     } catch (error) {
       console.error('Erreur :', error);
@@ -120,10 +120,10 @@ if (response.ok) {
     if (!query) return text;
     const regex = new RegExp(`(${query})`, 'gi');
     return text.split(regex).map((part, i) =>
-      regex.test(part) ? <span key={i} style={{ backgroundColor: 'lightblue' }}>{part}</span> : part
+      regex.test(part) ? <span key={i} style={{ backgroundColor: '#F7DC6F', fontWeight: 'bold' }}>{part}</span> : part
     );
   };
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const agentsPerPage = 8;
   const filteredAgents = agents.filter((agent) =>
@@ -164,7 +164,7 @@ if (response.ok) {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <img src={loupeImage} alt="loupe" />
+                <img src={loupeImage} alt="loupe" className="loupe-icon" />
               </div>
             </div>
             {filteredAgents.length > 0 ? (
@@ -262,7 +262,7 @@ if (response.ok) {
                 />
                 <label>Email</label>
               </div>
-              <div className="input-container">
+              <div className="input-container1">
                 <select name="sexe" value={formData.sexe} onChange={handleChange} className={formData.sexe !== "" ? 'has-value' : ''} required>
                   <option value="" disabled hidden> </option>
                   <option value="Homme">Homme</option>
@@ -290,7 +290,7 @@ if (response.ok) {
               </div>
 
               <div className="row">
-                <div className="input-container half-field">
+                <div className="input-container1">
                   <select name="direction" value={formData.direction} onChange={handleChange} className={formData.direction !== "" ? 'has-value' : ''} required>
                     <option value="" disabled hidden> </option>
                     {['DPSSE', 'DIR.COM', 'DRHM', 'DRTEFOP', 'DSI', 'DGT', 'DTPDF', 'DMP', 'DSST', 'DGPE'].map(dir => (
@@ -299,7 +299,7 @@ if (response.ok) {
                   </select>
                   <label>Direction</label>
                 </div>
-                <div className="input-container half-field">
+                <div className="input-container1">
                   <select name="qualite" value={formData.qualite} onChange={handleChange} className={formData.qualite !== "" ? 'has-value' : ''} required>
                     <option value="" disabled hidden> </option>
                     {['EFA', 'ELD', 'E', 'Fonctionnaire'].map(q => (

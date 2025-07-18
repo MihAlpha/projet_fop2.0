@@ -1,18 +1,17 @@
 :root {
-  --soft-blue: #19776e; /* Remplacé par bleu-vert */
-  --sidebar-bg: #167269; /* Bleu-vert foncé */
+  --soft-blue: #6C3483; /* Violet profond pour accent principal */
+  --sidebar-bg: #6E3B1E; /* Marron foncé */
   --card-bg: #ffffff;
-  --text-dark: #1e293b;
-  --hover-bg: #0f534b; /* Survol plus foncé */
+  --text-dark: #2E2E2E;
+  --hover-bg: #522a12; /* Marron encore plus foncé */
 }
 
 .superadmin-container {
   display: flex;
-  background-color: #f0fdfa;
+  background-color: #f5e4ff; /* fond légèrement coloré */
   min-height: 100vh;
 }
 
-/* Sidebar (menu latéral) */
 .sidebar {
   background-color: var(--sidebar-bg);
   width: 60px;
@@ -59,7 +58,6 @@
   text-align: center;
 }
 
-/* Texte masqué par défaut */
 .link-text {
   opacity: 0;
   visibility: hidden;
@@ -68,13 +66,11 @@
   white-space: nowrap;
 }
 
-/* Affichage du texte au survol */
 .sidebar:hover .link-text {
   opacity: 1;
   visibility: visible;
 }
 
-/* Partie principale */
 .dashboard-content {
   flex: 1;
   padding: 20px;
@@ -85,7 +81,6 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Cartes de statistiques */
 .stats-cards {
   display: flex;
   gap: 20px;
@@ -97,7 +92,7 @@ h2 {
   background-color: var(--card-bg);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 0 10px #e5e7eb;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
   min-width: 200px;
   display: flex;
   align-items: center;
@@ -109,13 +104,11 @@ h2 {
   color: var(--soft-blue);
 }
 
-/* Graphique */
 .chart-section {
   background-color: var(--card-bg);
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 0 10px #e5e7eb;
-  
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
 }
 
 .chart-section h3 {
@@ -180,9 +173,9 @@ h2 {
 
 .submenu a {
   font-size: 13px;
-  padding: 7px 9px 7px 15px; 
+  padding: 7px 9px 7px 15px;
   margin: 5px 10px;
-  background-color: rgba(255, 255, 255, 0.05); 
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -195,20 +188,21 @@ h2 {
 }
 
 .submenu .icon-wrapper .icon {
-  font-size: 1.2rem !important; 
+  font-size: 1.2rem !important;
   margin-left: -6px;
 }
+
 .icon-1 {
   position: relative;
   font-size: 32px;
   margin-left: 9px;
 }
+
 .dashboard-header {
   display: flex;
   align-items: center;
-  background-color: #e6f4f1;
-  border-bottom: 2px solid #00a19d;
-  background-color: #fff;
+  background-color: #fdf3ec;
+  border-bottom: 2px solid var(--soft-blue);
   box-shadow: 0 2px 5px rgba(53, 69, 99, 0.1);
 }
 
@@ -220,12 +214,13 @@ h2 {
 
 .ministry-name {
   font-size: 20px;
-  font-weight: 700px;
-  color: #007c78;
+  font-weight: 700;
+  color: var(--soft-blue);
   flex-grow: 1;
   line-height: 1.3;
   padding: 10px 20px;
 }
+
 .menu-icon {
   display: flex;
   flex-direction: column;
@@ -239,27 +234,13 @@ h2 {
 
 .menu-icon span {
   height: 3px;
-  background-color: #007c78; /* même couleur que le texte du ministère */
+  background-color: var(--soft-blue);
   border-radius: 2px;
 }
+
 .menu-container {
   position: relative;
   margin-left: auto;
-}
-
-.menu-icon {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 25px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.menu-icon span {
-  height: 3px;
-  background-color: #007c78;
-  border-radius: 2px;
 }
 
 .dropdown-menu {
@@ -285,20 +266,21 @@ h2 {
   padding: 8px;
   width: 100%;
   cursor: pointer;
-  color: #007c78;
+  color: var(--soft-blue);
   font-weight: 500;
   gap: 10px;
 }
 
 .dropdown-menu button:hover {
-  background-color: #f0fdfa;
+  background-color: #f5e4ff;
   border-radius: 6px;
 }
 
 .dropdown-icon {
   font-size: 16px;
 }
+
 .icon-wrapper-mess {
-  font-size: 1.2rem !important; 
+  font-size: 1.2rem !important;
   margin-left: -20px;
 }
