@@ -114,7 +114,69 @@ input[type="text"]:focus {
 .calendar-popup-left:hover {
   box-shadow: 0 12px 36px var(--orange);
 }
+.react-calendar__tile {
+  background-color: var(--blanc); /* fond clair */
+  color: var(--marron);            /* texte marron */
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+}
 
+/* Date survolée */
+.react-calendar__tile:enabled:hover {
+  background-color: var(--orange);
+  color: var(--blanc);
+  box-shadow: 0 0 8px var(--ombre-orange);
+  cursor: pointer;
+}
+
+/* Date sélectionnée */
+.react-calendar__tile--active {
+  background-color: var(--violet) !important;
+  color: var(--blanc) !important;
+  font-weight: 700;
+  box-shadow: 0 0 10px var(--ombre-marron);
+  border-radius: 18px;
+  z-index: 3;
+}
+
+/* Date du jour */
+.react-calendar__tile--now {
+  border: 2px solid var(--orange);
+  font-weight: 700;
+  color: var(--orange);
+}
+
+/* Dates hors du mois courant (voisines) */
+.react-calendar__tile--neighboringMonth {
+  color: #bfb1a4;
+  opacity: 0.6;
+}
+
+/* Désactivation des dates */
+.react-calendar__tile:disabled {
+  color: #ccc;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+/* Titre mois/année */
+.react-calendar__navigation__label {
+  color: var(--violet);
+  font-weight: 700;
+  font-size: 18px;
+  user-select: none;
+}
+
+/* Flèches précédent / suivant */
+.react-calendar__navigation__arrow {
+  color: var(--orange);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.react-calendar__navigation__arrow:hover {
+  color: var(--violet);
+}
 /* Événements du jour */
 .events-today-popup {
   background: linear-gradient(135deg, var(--marron), var(--orange));
